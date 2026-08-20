@@ -1,4 +1,4 @@
-"""IFEParser for MULTI1D Visualizer v2.3
+"""IFEParser for MULTI1D Visualizer v2.3.1
 
 Parses MULTI-IFE formatted ASCII fort.10 output files.
 MULTI-IFE uses formatted (text) I/O instead of standard MULTI1D's
@@ -35,33 +35,68 @@ class IFEParser(Fort10Parser):
         try:
             with open(self.filepath, 'r', encoding='utf-8', errors='replace') as f:
                 lines = f.readlines()
-            lines = [line.rstrip('\n\r') for line in lines]
 
-            idx = 0
-            count1 = int(lines[idx].strip()); idx += 1
-            labels1 = [lines[idx + i].strip() for i in range(count1)]; idx += count1
-            idx += count1  # skip indices
-            values1 = [self._parse_float(lines[idx + i]) for i in range(count1)]; idx += count1
+            # 统一转成非空 token 序列（每行一个 label/index/value，空行跳过）
+            tokens = [t for t in (l.strip() for l in lines) if t]
+
+            # ===== 第一节（时间无关数据）=====
+            p = 0
+            count1 = int(tokens[p]); p += 1
+            labels1 = tokens[p:p + count1]; p += count1
+            p += count1  # skip indices
+            values1 = [self._parse_float(t) for t in tokens[p:p + count1]]; p += count1
 
             self.first_dict = {}
             for var_name, vals in _group_by_label(labels1, values1).items():
                 self.first_dict[var_name.ljust(8)] = np.asarray(vals, dtype=float)
 
-            self.second_dict = []
-            while idx < len(lines):
-                s = lines[idx].strip()
-                if not s:
-                    idx += 1
-                    continue
-                count2 = int(s); idx += 1
-                labels2 = [lines[idx + i].strip() for i in range(count2)]; idx += count2
-                idx += count2  # skip indices
-                values2 = [self._parse_float(lines[idx + i]) for i in range(count2)]; idx += count2
+            # ===== 第二节表头（计数 + 变量名 + 索引）=====
+            count2 = int(tokens[p]); p += 1
+            labels2 = tokens[p:p + count2]; p += count2
+            p += count2  # skip indices
 
-                step_data = {}
-                for var_name, vals in _group_by_label(labels2, values2).items():
-                    step_data[var_name.ljust(8)] = np.asarray(vals, dtype=float)
-                self.second_dict.append(step_data)
+            # 变量名 → 列区间（名字连续重复，一次分组供所有记录复用）
+            var_ranges = []
+            i = 0
+            while i < count2:
+                j = i
+                while j < count2 and labels2[j] == labels2[i]:
+                    j += 1
+                var_ranges.append((labels2[i].ljust(8), i, j))
+                i = j
+
+            # ===== 第二节记录：兼容两种 fort.10 布局 =====
+            # A) 逐记录表头：每条记录前重复 count+labels+indices（原实现假设的布局）
+            # B) 流式输出：表头只写一次，随后所有记录的值连续输出、每行一个
+            #    （r94/MULTI-IFE-2015 m150304.f95 write_output_record 的实际行为）
+            # 判据：首条记录的 count2 个值之后，下一个 token 若是纯整数且等于
+            # count2，说明又出现一个完整表头 → 布局 A；否则视为布局 B。
+            rest = tokens[p:]
+            self.second_dict = []
+            if len(rest) > count2 and rest[count2].lstrip('+-').isdigit() \
+                    and int(rest[count2]) == count2:
+                # 布局 A：逐记录表头。首个表头已在上面消费，rest 开头是
+                # 首条记录的值；之后每条记录重复 count+labels+indices+values。
+                self.second_dict.append(
+                    self._build_record(var_ranges, rest[:count2]))
+                q = count2
+                while q < len(rest):
+                    cnt = int(rest[q]); q += 1
+                    if cnt != count2:
+                        raise ValueError(f'记录表头计数 {cnt} != {count2}')
+                    q += 2 * cnt  # labels + indices
+                    vals = rest[q:q + cnt]; q += cnt
+                    if len(vals) < cnt:
+                        raise ValueError('文件在记录中间意外结束')
+                    self.second_dict.append(self._build_record(var_ranges, vals))
+            else:
+                # 布局 B：流式输出
+                if len(rest) % count2 != 0:
+                    raise ValueError(
+                        f'流式布局 token 数 {len(rest)} 不是每记录 {count2} 个的整数倍')
+                for r in range(len(rest) // count2):
+                    vals = rest[r * count2:(r + 1) * count2]
+                    self.second_dict.append(self._build_record(var_ranges, vals))
 
             if not self.second_dict:
                 self.logger.error("未找到时间相关数据")
@@ -82,6 +117,14 @@ class IFEParser(Fort10Parser):
             import traceback
             traceback.print_exc()
             return False
+
+    def _build_record(self, var_ranges, vals):
+        """按 var_ranges 把一条记录的值切成 {变量名: 数组} 字典"""
+        d = {}
+        for name, i0, i1 in var_ranges:
+            d[name] = np.asarray(
+                [self._parse_float(v) for v in vals[i0:i1]], dtype=float)
+        return d
 
     def _parse_float(self, s: str) -> float:
         s = s.strip()

@@ -1,4 +1,4 @@
-"""Fort10Parser for MULTI1D Visualizer v2.3
+"""Fort10Parser for MULTI1D Visualizer v2.3.1
 
 Parses fort.10 binary files from MULTI1D simulation.
 """

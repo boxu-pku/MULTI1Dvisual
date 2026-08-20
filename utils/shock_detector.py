@@ -1,4 +1,4 @@
-"""ShockDetector for MULTI1D Visualizer v2.3
+"""ShockDetector for MULTI1D Visualizer v2.3.1
 
 Detects shock wave arrival times from density data.
 """

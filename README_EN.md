@@ -1,7 +1,7 @@
-# MULTI1D Visualizer v2.3
+# MULTI1D Visualizer v2.3.1
 
 ## Version Information
-- **Version**: v2.3
+- **Version**: v2.3.1
 - **Release Date**: June 1, 2026
 - **Author**: Bo Xu
 - **Major Update**: Coordinate system switching (XC/X), per-timestep grid position fix
@@ -768,6 +768,13 @@ MULTI1Dvisual/
 ---
 
 ## Changelog
+
+### v2.3.1 (2026-08-20)
+- 🐛 Fixed MULTI-IFE fort.10 loading: files whose section-2 header is written
+  once followed by a continuous stream of record values (the actual layout of
+  r94/MULTI-IFE-2015 m150304.f95) previously failed to parse
+  (`invalid literal for int() ...`). Both layouts — streamed values and
+  repeated per-record headers — are now auto-detected and supported.
 
 ### v2.3 (June 1, 2026)
 - ✨ Added coordinate system switching: XC (Cell Center) / X (Cell Edge)

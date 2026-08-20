@@ -1,4 +1,4 @@
-"""DataManager for MULTI1D Visualizer v2.3
+"""DataManager for MULTI1D Visualizer v2.3.1
 
 Manages multiple fort.10 / .case / MULTI-IFE fort.10 file instances.
 """

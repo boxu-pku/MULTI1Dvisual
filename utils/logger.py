@@ -1,4 +1,4 @@
-"""Logger utility for MULTI1D Visualizer v2.3"""
+"""Logger utility for MULTI1D Visualizer v2.3.1"""
 
 import logging
 import os

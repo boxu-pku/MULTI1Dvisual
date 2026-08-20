@@ -1,4 +1,4 @@
-"""Configuration for MULTI1D Visualizer v2.3"""
+"""Configuration for MULTI1D Visualizer v2.3.1.1"""
 
 import json
 import os
@@ -9,10 +9,10 @@ class Config:
 
     # ========== 应用信息 ==========
     APP_NAME = "MULTI1D可视化工具"
-    APP_VERSION = "2.3"
+    APP_VERSION = "2.3.1"
     APP_AUTHOR = "徐博(BoXu)"
     APP_EMAIL = "boxu25@stu.pku.edu.cn"
-    APP_DATE = "2026-06-25"
+    APP_DATE = "2026-08-20"
 
     # ========== 变量显示名称映射 (使用英文label，避免字符显示问题) ==========
     VARIABLE_DISPLAY = {

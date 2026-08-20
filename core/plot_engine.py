@@ -1,4 +1,4 @@
-"""PlotEngine for MULTI1D Visualizer v2.3
+"""PlotEngine for MULTI1D Visualizer v2.3.1
 
 Encapsulates all Matplotlib plotting operations.
 科研论文规范的绘图样式

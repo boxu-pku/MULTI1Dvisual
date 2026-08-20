@@ -1,4 +1,4 @@
-"""MainWindow for MULTI1D Visualizer v2.3
+"""MainWindow for MULTI1D Visualizer v2.3.1
 
 主窗口，包含菜单栏、工具栏、标签页等
 """

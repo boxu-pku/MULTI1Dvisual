@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MULTI1D Visualizer v2.3 - Main Entry Point
+MULTI1D Visualizer v2.3.1.1 - Main Entry Point
 A GUI application for visualizing MULTI1D simulation output files.
 Supports direct reading of fort.10 binary files.
 """

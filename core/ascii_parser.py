@@ -1,4 +1,4 @@
-"""ASCIIParser for MULTI1D Visualizer v2.3
+"""ASCIIParser for MULTI1D Visualizer v2.3.1
 
 Parses MULTI1D decimal ASCII output files (.case + .dat files)
 and converts to the same (first_dict, second_dict) format as Fort10Parser,

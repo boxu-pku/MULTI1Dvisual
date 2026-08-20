@@ -1,4 +1,4 @@
-"""Core package for MULTI1D Visualizer v2.3"""
+"""Core package for MULTI1D Visualizer v2.3.1"""
 
 from .fort10_parser import Fort10Parser
 from .ascii_parser import ASCIIParser
