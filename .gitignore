@@ -1,0 +1,22 @@
+# MULTI output / sample data
+fort.10
+200ev.out
+
+# PyInstaller build output
+dist/
+
+# Runtime logs
+logs/
+
+# Shock detector regenerable output
+shock_trajectory.csv
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS junk
+Thumbs.db
+.DS_Store
