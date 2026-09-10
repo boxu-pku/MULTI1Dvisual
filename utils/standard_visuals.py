@@ -48,11 +48,30 @@ def grab_namelist_float(txt, key, default=None):
 
 
 def grab_namelist_vector(txt, key):
-    for ln in txt.splitlines():
+    """Read a namelist vector; supports value continuation lines
+    (wrapped tables, e.g. long ttab/ptab kept under the 80-char
+    namelistblock limit in m150304). Added 2026-09-10 (route 4)."""
+    lines = txt.splitlines()
+    for i, ln in enumerate(lines):
         s = ln.strip()
         if s.startswith(key) and "=" in s:
             raw = s.split("=", 1)[1].split("!")[0].replace("/", " ")
-            return [float(v) for v in raw.split(",") if v.strip()]
+            vals = [float(v) for v in raw.split(",") if v.strip()]
+            j = i + 1
+            while j < len(lines):
+                ts = lines[j].strip()
+                if (not ts or "=" in lines[j] or ts.startswith('&')
+                        or ts.startswith('/') or ts.startswith('!')):
+                    break
+                try:
+                    more = [float(v) for v in ts.split(",") if v.strip()]
+                except ValueError:
+                    break
+                if not more:
+                    break
+                vals += more
+                j += 1
+            return vals
     return None
 
 
@@ -130,9 +149,11 @@ def _driver_info(txt, driver):
 
 # ============================================================ visualizer
 VAR_CFG = {
-    "R":  dict(log=True,  unit="R (g/cm^3)"),
+    # 2026-09-07 用户要求全部正常线性色标（log 全动态范围会把靶内部压成
+    # 大片纯色"空白"）；R/TE 与 PT 同法用 95% 分位截断上界
+    "R":  dict(log=False, unit="R (g/cm^3)"),
     "PT": dict(log=False, unit="PT (GPa)", factor=1e-10),
-    "TE": dict(log=True,  unit="TE (eV)"),
+    "TE": dict(log=False, unit="TE (eV)"),
 }
 
 
@@ -239,14 +260,14 @@ class StandardVisualizer:
 
     @staticmethod
     def _default_range(var, mat, cfg):
-        """PT 线性 95% 分位（极值常为烧蚀面尖峰）；R/TE log 极值外扩"""
+        """线性 95% 分位截断（极值常为烧蚀面/冕区尖峰，会压没主体结构）；
+        PT 保留少量负值下界显示，R/TE 下界为 0（2026-09-07 全线性定稿）"""
+        vmax = np.nanpercentile(mat, 95) * cfg.get("factor", 1.0)
+        if vmax <= 0:
+            vmax = np.nanmax(mat) * cfg.get("factor", 1.0)
         if var == "PT":
-            vmax = np.nanpercentile(mat, 95) * cfg.get("factor", 1.0)
-            if vmax <= 0:
-                vmax = np.nanmax(mat) * cfg.get("factor", 1.0)
             return (-vmax / 20.0, vmax)
-        lo = max(np.nanmin(mat[mat > 0]) * 0.9, 1e-2) if (mat > 0).any() else 1e-2
-        return (lo, np.nanmax(mat) * 3)
+        return (0.0, vmax)
 
     # ---- target schematic ----
     def layout_figure(self):
