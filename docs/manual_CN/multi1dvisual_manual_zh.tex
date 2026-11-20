@@ -1,0 +1,20 @@
+\newcommand{\booktitle}{用户手册}
+\newcommand{\tocname}{目录}
+\newcommand{\figword}{图}
+\newcommand{\chapterword}{第 \thesection\ 章}
+\newcommand{\coverline}{一维输出数据的读取、绘图与导出}
+\newcommand{\covercaption}{横轴为网格中心位置，单位为微米。三条曲线取自本手册的合成示例，展示同一个温度峰在三个输出时刻的位置。}
+\newcommand{\editionline}{桌面版 \enspace 2.3.1}
+\newcommand{\manualdate}{2026 年 11 月}
+\newcommand{\creditline}{简体中文版 \enspace ·\enspace 软件作者 徐博}
+\input{../manual_shared/layout}
+\begin{document}\color{ink}
+\cover
+\contentspage
+\subhead{如何使用这本手册}
+第一次使用时，先完成安装，再按第~\ref{quick}~章打开练习数据。保持示例文件打开，依次练习空间图、时间图和热图。需要与同事交换数值时，第~\ref{export}~章列出了每种导出文件的行列含义和检查方法。
+\checknote{手册与示例}{中、英文两版使用同一个 \code{quickstart.zip}。项目首页和桌面安装包都提供这份练习数据。本书截图来自 Windows 上的中文 Qt 界面。Linux 版使用相同的绘图控件，文件选择器和窗口外观由桌面环境决定。}
+\input{chapters/getting_started}
+\input{chapters/plots}
+\input{chapters/tools_reference}
+\end{document}

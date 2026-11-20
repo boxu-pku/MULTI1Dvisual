@@ -1,0 +1,92 @@
+\chapterpage{install}{Install the desktop application}
+\subhead{Linux packages}
+Use the package built for your distribution. These installers register an application menu entry and use the distribution's Python, Qt and plotting libraries. Allow the package manager to fetch the dependencies it lists.
+\Table{Distribution}{File for version 2.3.1}{
+Debian or Ubuntu & \code{multi1dvisual_2.3.1-1_all.deb}\\
+Fedora & \code{multi1dvisual-2.3.1-1.noarch.rpm}\\}
+\begin{enumerate}
+\item Open the downloaded file in your file manager. If it displays the archive contents, use \ui{Open With} and choose the system's software installer, such as GDebi on Ubuntu when installed.
+\item Review the package name \code{multi1dvisual} and choose \ui{Install}. System-wide installation can prompt for your administrator password.
+\item Find \ui{MULTI1Dvisual} in the applications menu, or run \code{multi1dvisual} in a terminal within your graphical session.
+\item The main window opens with three plotting tabs. From \ui{Help → Documentation}, choose either manual to open it locally in a PDF reader.
+\end{enumerate}
+\subhead{Terminal installation}
+Open a terminal in the directory containing the downloaded package. Use the command for your distribution. The \code{./} selects the local file.
+\begin{verbatim}
+sudo apt install ./multi1dvisual_2.3.1-1_all.deb
+\end{verbatim}
+\begin{verbatim}
+sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
+\end{verbatim}
+\subhead{Check, update or remove}
+On Debian or Ubuntu, \code{dpkg-query -W multi1dvisual} prints the installed version. On Fedora, use \code{rpm -q multi1dvisual}. For a newer package, repeat the installation command with its new filename. To uninstall, use \code{sudo apt remove multi1dvisual} or \code{sudo dnf remove multi1dvisual}.
+\checknote{Offline documentation}{The Linux package places the manuals and example below \code{/usr/share/multi1dvisual/docs/}. Copy \code{examples/quickstart.zip} to a writable directory before practising.}
+
+\nextpage{otherinstall}{Windows and source installations}
+\subhead{Windows 10 or 11, x64}
+\begin{enumerate}
+\item Open \code{MULTI1Dvisual-Setup-2.3.1-x64.exe}. Select the installer language and the optional desktop shortcut.
+\item Finish the wizard and launch \ui{MULTI1Dvisual} from Start. This installer includes Python and the plotting libraries.
+\item Use \ui{Help → Documentation} for the PDFs. In the default installation, enter \texttt{\%LOCALAPPDATA\%} in the File Explorer address bar, then open \code{Programs/MULTI1Dvisual/manual/docs}. The \code{examples} folder contains the practice archive.
+\end{enumerate}
+Use \ui{Installed apps} in Windows Settings to uninstall. If you chose a custom installation directory, look for \code{manual/docs} under that directory.
+\subhead{Run a source checkout on Linux}
+For a checkout that contains \code{main.py} and \code{requirements.txt}, run the following from the project root in a graphical session. The Python installation must provide the \code{venv} module.
+\begin{verbatim}
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+python main.py
+\end{verbatim}
+The source checkout keeps the PDFs under \code{docs/manual_EN} and \code{docs/manual_CN}, and the example in \code{docs/examples}. For building native packages from a checkout, see \code{packaging/README.md} in that checkout.
+\subhead{Set the interface language}
+Choose \ui{Help → Change Language} (帮助 → 更改语言 in the Chinese interface). Select \ui{English} or \ui{简体中文}, confirm and restart the application. Saving an installer language and choosing an application language are separate steps.
+\checknote{First launch}{A blank canvas is expected. Use \keys{Ctrl+O} to load a data file, then choose a variable and press \ui{Plot}. The complete example starts on the next page.}
+
+\chapterpage{quick}{Quick start with the sample data}
+Extract \code{quickstart.zip} into a writable folder. The bundle contains two representations of a small, synthetic temperature distribution on a stationary grid. You can check every plotted maximum against the numbers below.
+\begin{enumerate}
+\item Press \keys{Ctrl+O} and open \code{quickstart.case}. Keep the two matching \code{.dat} files beside it. Check the file information bar for \ui{9} timesteps and \ui{21} cells.
+\item Press \keys{Ctrl+1}. Choose \ui{T}, coordinate \ui{XC}, position unit \ui{um} and value unit \ui{eV}. Hold Ctrl and select moments \ui{\#0}, \ui{\#4} and \ui{\#8}. Click \ui{Plot}. The three peaks move to the right.
+\item Press \keys{Ctrl+2}. Choose the cell time-evolution mode, \ui{T} and \ui{Cell \#10}. Use \ui{ns} and \ui{eV}, then click \ui{Plot}. Its largest sampled value occurs at 2~ns.
+\item Press \keys{Ctrl+3}. Choose \ui{T}, \ui{XC} and time on the horizontal axis. Select \ui{viridis}, click \ui{Auto} in the colour settings, then \ui{Plot}. Trace the bright band from 30 to 70~µm.
+\item Return to the spatial tab, retain the three moments and use \ui{Export Data} to save \code{profiles.csv}. Open the table and compare the values below. To keep a picture as well, use \keys{Ctrl+S} and give the file a \code{.png} extension.
+\end{enumerate}
+\Table{Selected moment}{Expected maximum of T on the sampled grid}{
+\#0 \enspace 0.0 ns & 8 eV at 30 µm, cell \#6\\
+\#4 \enspace 2.0 ns & 8 eV at 50 µm, cell \#10\\
+\#8 \enspace 4.0 ns & 8 eV at 70 µm, cell \#14\\}
+\subhead{What the example contains}
+There are nine outputs at 0.5~ns intervals. The 21 centres run from 0 to 100~µm at 5~µm intervals. \code{T} is a smooth peak above a 2~eV baseline. \code{R} is a simple density ramp. The global scalar \code{ENIE} increases from 10 to 18 in the example's stored units.
+\checknote{Second representation}{Open \code{quickstart.out} to read the equivalent binary data. Use this copy for the recording and replay exercise in Chapter~\ref{recorder}.}
+
+\chapterpage{files}{Open files and navigate the workspace}
+\Table{Entry to open}{Companion data and how the viewer reads it}{
+\code{fort.10} or binary \code{.out} & Open the output file directly. Its records contain the stored coordinates, fields and time samples.\\
+Formatted \code{fort.10} & The viewer checks the initial record to distinguish supported MULTI-IFE formatted text from standard binary output. Preserve the producer's original filename.\\
+\code{name.case} & The basename locates \code{name.scalars.dat} and \code{name.center.dat} in the same directory. Both are required.\\
+Additional ASCII tables & \code{name.interface.dat} supplies interface fields, while \code{name.group.dat} can supply group data when present.\\}
+\subhead{Check the ASCII layout}
+The example tables are tab-separated. A header beginning with \texttt{\# TIME} names the columns. The scalar table has one row per output time. Centre rows are grouped in the same time order, with the same number of cells in every block. The reader reshapes these rows by count. Changing their order in a spreadsheet can associate a value with the wrong cell.
+\subhead{Read the main window}
+The top information bar shows the active filename and the timestep and cell counts. The left side of each tab holds its controls and the right side holds the plot. Scroll the controls if the plotting and export buttons are below the visible area. The bottom status line reports loads, plots and saves.
+\begin{enumerate}
+\item \keys{Ctrl+O} opens the file picker. The English button reads \ui{Open Binary File...}. The supported-file filter includes \code{.case}.
+\item To refresh data written since opening the file, choose \ui{Reload} in the top bar or toolbar. After loading, reselect the variable and records, then plot again.
+\item Opening another file changes the active dataset. Check the filename before exporting or starting a recording.
+\end{enumerate}
+\checknote{One export direction}{The legacy ASCII export creates \code{_SCout.txt} and \code{_TSout.txt}. To open a decimal case, use the original \code{.case} and its matching \code{.dat} files.}
+
+\nextpage{coords}{Choose coordinates and units}
+First decide what is held fixed. The spatial tab fixes an output time. A cell history fixes an array index. A fixed-position cut through a moving grid can pass through different cells over time.
+\Table{Coordinate}{Meaning and appropriate use}{
+\code{XC} / \code{X} & Current cell centre / interface position. Use a length unit. The grid can move between outputs. Match a field to its stored location.\\
+\code{LC} / \code{LI} & Centre / interface position at the first output. This initial length coordinate gives each indexed location a fixed reference.\\
+\code{NC} / \code{NI} & Cell / interface number from the file. The axis shows stored index labels. They can differ from the zero-based \ui{Cell \#} picker.\\
+\code{CMC} / \code{CMI} & Cumulative mass coordinate at centres / interfaces, when available. The axis unit is mass per area.\\}
+The selector lists the coordinates supplied or derivable for the file. A centre field commonly has \(N\) values and an interface field \(N+1\). Compare a centre temperature with \code{XC}. For an interface field stored on \code{X}, select \code{X} and check its array length before interpreting an endpoint.
+\subhead{Units on the controls}
+\code{um} denotes micrometres. \(1~\mathrm{cm}=10^4~\mathrm{\mu m}\) and \(1~\mathrm{ns}=10^{-9}~\mathrm{s}\). The temperature control for \code{T}, \code{TI} and \code{TR} offers eV and K. The application uses 11,604.518~K per eV. The example peak is therefore about 92,836~K. Pressure controls for \code{P} and \code{PT} include GPa, Mbar and the stored \code{dyn/cm^2}. Read the time, coordinate and value units independently.
+\subhead{Match the index to the question}
+In the example, \ui{Cell \#10} is the eleventh centre, at 50~µm. The \code{NC} value there is 11. The time-history picker keeps following index 10 if that centre moves. To sample a constant spatial position instead, use a fixed-position profile in Chapter~\ref{profiles}.
+\checknote{Unit changes}{Replot after changing a unit. On a heatmap, also recalculate or re-enter the colour limits in the chosen value unit before comparing two figures.}

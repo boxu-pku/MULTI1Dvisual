@@ -5,6 +5,7 @@
 
 import sys
 import os
+from pathlib import Path
 
 from PyQt5.QtWidgets import (
     QMainWindow, QTabWidget, QMenuBar, QMenu,
@@ -12,8 +13,8 @@ from PyQt5.QtWidgets import (
     QMessageBox, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QToolBar, QFrame, QSplitter, QComboBox, QDialogButtonBox
 )
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QColor, QFont
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal
+from PyQt5.QtGui import QColor, QDesktopServices, QFont
 
 from ui.spatial_tab import SpatialTab
 from ui.temporal_tab import TemporalTab
@@ -272,6 +273,9 @@ class MainWindow(QMainWindow):
 
         # ========== 帮助菜单 ==========
         help_menu = menubar.addMenu(LanguageManager.get_text('menu_help'))
+        manuals_menu = help_menu.addMenu(LanguageManager.get_text('help_doc'))
+        manuals_menu.addAction("中文用户手册", lambda: self.open_manual("manual_CN/multi1dvisual_manual_zh.pdf"))
+        manuals_menu.addAction("English User Manual", lambda: self.open_manual("manual_EN/multi1dvisual_manual_en.pdf"))
 
         # 语言切换
         language_action = QAction(LanguageManager.get_text('menu_change_language'), self)
@@ -287,6 +291,16 @@ class MainWindow(QMainWindow):
         shortcut_action = QAction(LanguageManager.get_text('help_shortcuts'), self)
         shortcut_action.triggered.connect(self.show_shortcuts)
         help_menu.addAction(shortcut_action)
+
+    def open_manual(self, relative_path):
+        if getattr(sys, "frozen", False):
+            root = Path(sys.executable).parent / "manual"
+        else:
+            root = Path(__file__).resolve().parents[1]
+        path = root / "docs" / relative_path
+        if not path.is_file() or not QDesktopServices.openUrl(QUrl.fromLocalFile(str(path))):
+            QMessageBox.warning(self, LanguageManager.get_text('help_doc'),
+                                f"{LanguageManager.get_text('manual_open_failed')}\n{path}")
 
     def setup_toolbar(self):
         """设置工具栏"""

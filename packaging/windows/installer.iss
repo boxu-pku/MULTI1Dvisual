@@ -35,6 +35,9 @@ Source: "..\..\build\windows\bundle\MULTI1Dvisual\*"; DestDir: "{app}"; Flags: i
 Source: "..\..\README*.md"; DestDir: "{app}\manual"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}\manual\packaging"; Flags: ignoreversion
 Source: "..\..\resources\icons\multi1dvisual.png"; DestDir: "{app}\manual\resources\icons"; Flags: ignoreversion
+Source: "..\..\docs\manual_CN\multi1dvisual_manual_zh.pdf"; DestDir: "{app}\manual\docs\manual_CN"; Flags: ignoreversion
+Source: "..\..\docs\manual_EN\multi1dvisual_manual_en.pdf"; DestDir: "{app}\manual\docs\manual_EN"; Flags: ignoreversion
+Source: "..\..\docs\examples\quickstart.zip"; DestDir: "{app}\manual\docs\examples"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\MULTI1Dvisual"; Filename: "{app}\MULTI1Dvisual.exe"

@@ -1,0 +1,92 @@
+\chapterpage{install}{安装桌面版}
+\subhead{Linux 图形安装}
+按发行版选择安装包。安装完成后，系统会登记桌面图标和应用菜单入口。Python、Qt 和绘图库由发行版的软件包管理器提供，请允许它获取并安装列出的依赖。
+\Table{使用的系统}{2.3.1 版安装文件}{
+Debian 或 Ubuntu & \code{multi1dvisual_2.3.1-1_all.deb}\\
+Fedora & \code{multi1dvisual-2.3.1-1.noarch.rpm}\\}
+\begin{enumerate}
+\item 在文件管理器中双击下载好的安装包。如果看到的是文件列表，右键选择“打开方式”，改用系统的软件安装器。在装有 GDebi 的 Ubuntu 上也可以选 GDebi。
+\item 在安装窗口核对包名 \code{multi1dvisual}，点击“安装”。系统级安装可能会提示输入管理员密码。
+\item 在应用菜单搜索 \ui{MULTI1Dvisual}，点击图标启动。也可以在图形桌面的终端输入 \code{multi1dvisual}。
+\item 看到三个绘图标签页后，从\ui{帮助 → 使用文档}选择中文版或英文版，即可用本机 PDF 阅读器离线打开。
+\end{enumerate}
+\subhead{用终端安装}
+在存放下载文件的目录中打开终端。Debian 或 Ubuntu 执行第一条命令，Fedora 执行第二条。文件名前的 \code{./} 表示安装当前目录中的文件。
+\begin{verbatim}
+sudo apt install ./multi1dvisual_2.3.1-1_all.deb
+\end{verbatim}
+\begin{verbatim}
+sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
+\end{verbatim}
+\subhead{核对版本、升级和卸载}
+用 \code{dpkg-query -W multi1dvisual} 可查看 Debian 或 Ubuntu 上的安装版本。在 Fedora 上使用 \code{rpm -q multi1dvisual}。升级时将安装命令中的文件名换成新版本。需要卸载时，分别使用 \code{sudo apt remove multi1dvisual} 或 \code{sudo dnf remove multi1dvisual}。
+\checknote{找到练习文件}{Linux 安装版把手册和示例放在 \code{/usr/share/multi1dvisual/docs/} 下。先把其中的 \code{examples/quickstart.zip} 复制到自己可写的目录，再解压练习。}
+
+\nextpage{otherinstall}{Windows 安装与从源码启动}
+\subhead{Windows 10 或 11，x64}
+\begin{enumerate}
+\item 打开 \code{MULTI1Dvisual-Setup-2.3.1-x64.exe}。选择安装界面语言，根据需要勾选桌面快捷方式。
+\item 完成向导后，在“开始”菜单启动 \ui{MULTI1Dvisual}。安装包内含 Python 运行环境及绘图依赖。
+\item 从\ui{帮助 → 使用文档}打开 PDF。若使用默认安装位置，在资源管理器地址栏输入 \texttt{\%LOCALAPPDATA\%}，再进入 \code{Programs/MULTI1Dvisual/manual/docs}。其中的 \code{examples} 目录有练习压缩包。
+\end{enumerate}
+自定义安装目录下的文档位于 \code{manual/docs}。需要卸载时，在 Windows 设置的“已安装的应用”中找到 MULTI1Dvisual。
+\subhead{在 Linux 上从源码启动}
+在有桌面显示的终端中，进入同时包含 \code{main.py} 和 \code{requirements.txt} 的项目根目录。确保所用 Python 支持 \code{venv}，然后用下面的命令启动程序。
+\begin{verbatim}
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+python main.py
+\end{verbatim}
+源码中的两份 PDF 分别位于 \code{docs/manual_CN} 和 \code{docs/manual_EN}。练习包在 \code{docs/examples} 下。从源码制作桌面安装包的步骤见仓库内的 \code{packaging/README.md}。
+\subhead{切换主界面语言}
+打开\ui{帮助 → 更改语言}，选择“简体中文”或 \ui{English}，确认后重启程序。英文界面下同一命令位于 \ui{Help → Change Language}。安装向导和应用主窗口分别保存各自的语言选择。
+\checknote{第一次打开}{主窗口初始显示空画布。按 \keys{Ctrl+O} 载入数据后，还需要选择变量并点击“绘制”。下一页可以从头完成一次完整操作。}
+
+\chapterpage{quick}{用示例完成第一张图}
+把 \code{quickstart.zip} 解压到可写目录。示例提供同一组数据的十进制和二进制文件。网格保持静止，温度峰随时间平移，方便在不同绘图页交叉核对同一个数值。
+\begin{enumerate}
+\item 按 \keys{Ctrl+O}，打开 \code{quickstart.case}，两个同名开头的 \code{.dat} 文件保存在旁边。文件信息栏应显示 \ui{9} 个时间步、\ui{21} 个网格。
+\item 按 \keys{Ctrl+1} 进入“空间图”。选择变量 \ui{T}、坐标 \ui{XC}、位置单位 \ui{um} 和数值单位 \ui{eV}。按住 Ctrl 依次选中第 \ui{\#0}、\ui{\#4}、\ui{\#8} 个时刻，点击\ui{绘制}。三条曲线的峰位依次向右移动。
+\item 按 \keys{Ctrl+2}，选择网格单元的时间演化模式，再选 \ui{T} 和 \ui{Cell \#10}。时间设为 \ui{ns}、温度设为 \ui{eV}，点击\ui{绘制}。该单元在 2 ns 达到最高温度。
+\item 按 \keys{Ctrl+3}，在热图中选 \ui{T}、\ui{XC}，横轴设为时间。在颜色设置中选 \ui{viridis}，点击颜色范围旁的“自动”，然后绘制。最亮的区域从约 30 µm 移到 70 µm。
+\item 回到空间图，保留三个时刻，点击本页的\ui{导出数据}，保存为 \code{profiles.csv}。逐列核对下表。若需要图像，再按 \keys{Ctrl+S}，输入带 \code{.png} 后缀的文件名。
+\end{enumerate}
+\Table{时刻编号和时间}{离散网格上的 T 最大值}{
+\#0 \enspace 0.0 ns & 30 µm 处为 8 eV，对应第 \#6 个单元\\
+\#4 \enspace 2.0 ns & 50 µm 处为 8 eV，对应第 \#10 个单元\\
+\#8 \enspace 4.0 ns & 70 µm 处为 8 eV，对应第 \#14 个单元\\}
+\subhead{认识练习数据}
+9 个输出时刻相隔 0.5 ns。21 个单元中心从 0 到 100 µm，间隔 5 µm。\code{T} 是叠加在 2 eV 基线上的平滑温度峰，\code{R} 是随位置缓慢增加的密度。全局标量 \code{ENIE} 从 10 增加到 18，此处使用示例的存储数值。
+\checknote{二进制练习}{同目录的 \code{quickstart.out} 存储等价的数据。第~\ref{recorder}~章用它实际生成并运行回放脚本。}
+
+\chapterpage{files}{打开文件与使用主窗口}
+\Table{打开的入口}{文件之间的关系与读取方式}{
+\code{fort.10} 或二进制 \code{.out} & 直接打开输出文件即可读取各时间步存储的坐标、场量和时间。\\
+格式化文本 \code{fort.10} & 程序检查起始记录，区分支持的 MULTI-IFE 格式化文本和标准二进制输出。建议保留原始文件名。\\
+\code{name.case} & 同一目录下必须同时有 \code{name.scalars.dat} 和 \code{name.center.dat}。名称前缀必须一致。\\
+可选的 ASCII 表 & \code{name.interface.dat} 提供界面位置及界面量。有群数据时，还可能包含 \code{name.group.dat}。\\}
+\subhead{检查十进制文件}
+练习数据的列之间使用制表符。以 \texttt{\# TIME} 开始的表头给出列名。标量表每个输出时刻一行。中心量按时间分块，同一块内按网格顺序排列，每个时间块的行数相同。程序按行数将其重排成数组。在电子表格中单独排序某一列，可能使物理量与网格错位。
+\subhead{从主窗口辨认当前数据}
+顶部信息栏显示当前文件名、时间步数和网格数。每个标签页的左侧为选项，右侧为图形。窗口高度较小时，可滚动左侧面板找到“绘制”和“导出数据”。窗口底部的状态行显示最近一次载入、绘图或保存的结果。
+\begin{enumerate}
+\item 用 \keys{Ctrl+O} 打开选取窗口。即使按钮写着“打开二进制文件”，文件过滤器也支持 \code{.case}。
+\item 如果磁盘上的输出已更新，点击信息栏或工具栏中的 \ui{Reload}。重新选择变量和时间步，再次绘制。
+\item 打开第二个文件后，当前数据会切换。导出或开始录制前先核对顶部文件名。
+\end{enumerate}
+\checknote{重新打开数据}{旧式 ASCII 导出会生成 \code{_SCout.txt} 和 \code{_TSout.txt}。要读取十进制算例，应选择原始的 \code{.case} 及其配套 \code{.dat} 文件。}
+
+\nextpage{coords}{选择坐标与单位}
+先确定要固定什么量。空间图固定输出时刻，网格时间曲线固定数组中的单元编号。在运动网格上，固定空间位置的截面可能随时间穿过不同单元。
+\Table{坐标系}{含义与用法}{
+\code{XC} / \code{X} & 当前时刻的单元中心／界面位置，单位为长度。网格随时间运动时，各时间步的位置可以不同。\\
+\code{LC} / \code{LI} & 初始输出时刻的中心／界面位置。后续记录仍沿用初始长度坐标，便于跟踪同一编号。\\
+\code{NC} / \code{NI} & 文件中记录的单元／界面编号，单位为 index。该编号可能与从零开始显示的 \ui{Cell \#} 列表相差一。\\
+\code{CMC} / \code{CMI} & 中心／界面上的累积质量坐标，在文件提供相应数据时可用，量纲为单位面积质量。\\}
+菜单根据文件中已有或可推得的坐标生成。中心量通常有 \(N\) 个值，界面量通常有 \(N+1\) 个值。比较中心温度时选 \code{XC}。若某变量存储在界面上，选 \code{X} 并检查数组长度，再判断最外侧的数据。
+\subhead{分别辨认横轴、纵轴和颜色条}
+界面上的 \code{um} 表示微米。1 cm 等于 \(10^4\) µm，1 ns 等于 \(10^{-9}\) s。\code{T}、\code{TI}、\code{TR} 可以在 eV 和 K 间切换，程序使用 1 eV 对应 11,604.518 K。练习峰值 8 eV 约合 92,836 K。\code{P}、\code{PT} 的压强单位可选 GPa、Mbar 和原始单位 \code{dyn/cm^2}。改变某一项时，应分别读出坐标单位和数值单位。
+\subhead{同一位置为何会有两个编号}
+练习中的 \ui{Cell \#10} 是从零计数的第 11 个中心，位于 50 µm，文件中该点的 \code{NC} 值为 11。如果网格会动，时间图仍按数组下标 10 跟踪同一单元。要固定在空间的 50 µm 处，请使用第~\ref{profiles}~章中的固定位置截面。
+\checknote{换单位后}{重新点击“绘制”。如果正在比较两幅热图，还要用新数值单位重新计算或填写颜色上下限。}

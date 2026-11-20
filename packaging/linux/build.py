@@ -29,7 +29,14 @@ def build(staging):
 
     for name in ("README.md", "README_EN.md"):
         files.append(package_file(ROOT / name, f"/usr/share/doc/multi1dvisual/{name}"))
+    # Minimal Debian installations can filter /usr/share/doc during unpacking.
+    # The Help menu reads the application's own copy on every desktop.
+    for name in ("manual_CN/multi1dvisual_manual_zh.pdf", "manual_EN/multi1dvisual_manual_en.pdf",
+                 "examples/quickstart.zip"):
+        files.append(package_file(ROOT / "docs" / name, f"{APP_DIR}/docs/{name}"))
     files.extend([
+        {"type": "symlink", "src": "../../multi1dvisual/docs", "dst": "/usr/share/doc/multi1dvisual/docs",
+         "file_info": {"mode": 0o777}},
         package_file(ROOT / "packaging/README.md", "/usr/share/doc/multi1dvisual/packaging/README.md"),
         package_file(HERE / "multi1dvisual", "/usr/bin/multi1dvisual", 0o755),
         package_file(HERE / f"{APP_ID}.desktop", f"/usr/share/applications/{APP_ID}.desktop"),

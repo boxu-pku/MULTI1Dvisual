@@ -48,6 +48,7 @@ class LanguageManager:
 
             # 帮助菜单
             'help_doc': '使用文档',
+            'manual_open_failed': '请检查手册文件是否存在，并使用 PDF 阅读器打开。',
             'help_shortcuts': '快捷键',
             'help_about': '关于本软件',
 
@@ -400,6 +401,7 @@ class LanguageManager:
 
             # Help Menu
             'help_doc': 'Documentation',
+            'manual_open_failed': 'Check that the manual exists and open it with a PDF reader.',
             'help_shortcuts': 'Keyboard Shortcuts',
             'help_about': 'About',
 

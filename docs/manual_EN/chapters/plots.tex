@@ -1,0 +1,44 @@
+\chapterpage{spatial}{Compare spatial profiles}
+Use \ui{Spatial Plot} (\keys{Ctrl+1}) to compare one field at several recorded times. Each list entry shows a zero-based record number and its time in ns.
+\begin{enumerate}
+\item With \code{quickstart.case} open, choose \ui{T}, \ui{XC}, \ui{um} and \ui{eV}. Select moment \ui{\#0}, choose blue and a solid line, then apply the style to the selection.
+\item Give \ui{\#4} an orange dashed line and \ui{\#8} a purple dash-dot line in the same way. Ctrl-click the three moments, enable \ui{Show Legend} and click \ui{Plot}.
+\end{enumerate}
+\Figure{spatial}{The same field at 0, 2 and 4 ns. The legend identifies the times. The three sampled maxima have the same height and different positions.}{110mm}
+Use \ui{Select All} or inverse selection for long lists. Removing a selected moment marks it as excluded. Restore it with \ui{Cancel Delete} or the corresponding restore control, then select and replot. These controls work on the selection in memory. The loaded data file is preserved.
+\checknote{Read a moving grid}{The plot uses each record's own \code{XC} or \code{X} when available. A spatial CSV uses one coordinate column for all selected times. The export example on page~\pageref{checkcsv} explains how to handle this difference.}
+
+\chapterpage{temporal}{Read a time history}
+Open \ui{Temporal Plot} (\keys{Ctrl+2}). A global variable gives one stored value per output. In cell mode, each selected cell contributes a separate series from a spatial field.
+\begin{enumerate}
+\item In global mode, choose \ui{ENIE}, set time to \ui{ns} and click \ui{Plot}. The example gives 10, 14 and 18 at 0, 2 and 4 ns.
+\item Switch to cell time evolution, choose \ui{T}, value unit \ui{eV} and \ui{Cell \#10}. Enable the legend and click \ui{Plot}. For a comparison, add cells \ui{\#6} and \ui{\#14} with Ctrl-click and replot.
+\end{enumerate}
+\Figure{temporal}{Cell \#10 sampled at all nine times. On this stationary grid, this cell is also the fixed position 50 µm.}{110mm}
+Use distinct colours or line styles and apply them to selected cells before plotting. The material-colour action uses stored material IDs (\code{MID}) where available. The practice bundle has no material IDs. The global series takes its style from the controls for the current plot.
+\checknote{Compare with a table}{Use this tab's \ui{Export Data} to get one time column and one column per enabled selected cell. At 2 ns, \ui{Cell \#10} has 8 eV. The global export instead names its second column after the scalar.}
+
+\chapterpage{heatmap}{Build a space–time heatmap}
+A heatmap assigns a colour to a field value at a time and coordinate. Start with the same field and units as your line plots so the colour bar has a direct numerical reference.
+\begin{enumerate}
+\item Open \ui{Heatmap} (\keys{Ctrl+3}). Select \ui{T}, \ui{XC}, \ui{um}, \ui{ns} and \ui{eV}. Under coordinate direction, put time on X and position on Y.
+\item Choose \ui{viridis}. Click \ui{Auto} in the colour settings to fill the minimum and maximum, leave linear colour enabled and click \ui{Plot}.
+\end{enumerate}
+\Figure{heatmap}{Time runs left to right. The bright ridge passes through approximately 50 µm at 2 ns. The scale at the right gives temperature in eV.}{110mm}
+To mark a reading, enter \code{50} under \ui{Position Marks} and \code{2} under \ui{Time Marks}, then plot again. Enter multiple values with commas. The physical meanings of the mark fields stay the same when the axes are exchanged.
+\checknote{Read an axis before clicking}{In this orientation the point at 2 ns and 50 µm has screen coordinates \((2,50)\). When position is on X and time is on Y the same point is \((50,2)\).}
+
+\nextpage{sampling}{Colour limits, zoom and sampling}
+\subhead{Compare two maps on a common scale}
+\begin{enumerate}
+\item Plot the example with \ui{T} in eV. Use \ui{Auto} once to learn the range. Enter 2 and 8 as the colour minimum and maximum and plot again.
+\item Open the comparison data and reselect the same field, coordinate, units, colour map and limits. Apply the same axis ranges when comparing positions or durations across files.
+\item For positive quantities spanning a large range, enable \ui{Log Color} and choose a strictly positive minimum below the maximum. Keep a linear colour scale to inspect zero crossings or signed values.
+\end{enumerate}
+The X and Y range controls limit the visible plot. Colour limits govern the mapping of values to colours. Values above a fixed maximum can share the same colour. Inspect a line plot or CSV if you need to distinguish their numerical values.
+\subhead{What lies between recorded points}
+For physical-position maps, the viewer linearly interpolates each record's field onto a common spatial grid, using the coordinates at that record. Areas outside the sampled support can be blank. In time-horizontal mode it can also interpolate along time. The display grid can be much denser than the original array of 9 times by 21 centres.
+For a stored mass or number coordinate (\code{CMC}, \code{CMI}, \code{NC}, \code{NI}), the labelled cells or interfaces share fixed coordinates between records. An optional \ui{I-Left} or \ui{I-Right} multi-group spectrum uses time and group frequency instead of spatial position, when frequency-group centres and matching data are present.
+\subhead{Navigate the plotting canvas}
+Drag a rectangle with the left mouse button to frame a region. The scroll wheel changes the range around the pointer. Click the canvas and press \keys{H} to step back through zoom history or \keys{A} for the full view. Finish a line extraction or close its tool before using a drag for zoom.
+\checknote{Check the original sampling}{A smooth ridge between cells or times is an interpolated value. Use an original time record in the spatial tab, or a named cell in the temporal tab, to check a feature against the stored values.}

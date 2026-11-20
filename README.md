@@ -4,6 +4,10 @@
 
 [Linux 和 Windows 桌面安装](#安装指南) · [English](README_EN.md)
 
+[中文用户手册（PDF）](docs/manual_CN/multi1dvisual_manual_zh.pdf) · [English user manual (PDF)](docs/manual_EN/multi1dvisual_manual_en.pdf) · [手册配套示例](docs/examples/quickstart.zip)
+
+安装桌面版后，从“帮助 → 使用文档”可离线打开任一语言的手册。
+
 ## 版本信息
 - **版本**: v2.3.1
 - **发布日期**: 2026-06-01

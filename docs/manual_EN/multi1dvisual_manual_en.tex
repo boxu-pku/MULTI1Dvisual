@@ -1,0 +1,20 @@
+\newcommand{\booktitle}{User Manual}
+\newcommand{\tocname}{Contents}
+\newcommand{\figword}{Figure}
+\newcommand{\chapterword}{Chapter \thesection}
+\newcommand{\coverline}{Reading and plotting one-dimensional output}
+\newcommand{\covercaption}{Cell-centre position in micrometres. The three curves follow the same synthetic temperature peak at successive recorded times.}
+\newcommand{\editionline}{Desktop edition \enspace 2.3.1}
+\newcommand{\manualdate}{November 2026}
+\newcommand{\creditline}{English edition \enspace ·\enspace Software by Bo Xu}
+\input{../manual_shared/layout}
+\begin{document}\color{ink}
+\cover
+\contentspage
+\subhead{Using this manual}
+If this is your first session, install the desktop application and work through the example in Chapter~\ref{quick}. Keep the example open as you read the three plotting chapters. Chapter~\ref{export} explains how to identify the values in each exported table.
+\checknote{Files to keep together}{Both editions use the same \code{quickstart.zip}. The archive is linked at the top of the project README and included with the desktop installers. The screenshots show the English Qt interface on Windows. Linux uses the same plotting controls. Some dialogs retain Chinese labels in the English interface.}
+\input{chapters/getting_started}
+\input{chapters/plots}
+\input{chapters/tools_reference}
+\end{document}

@@ -1,3 +1,5 @@
 packaging/linux/* text eol=lf
 *.png binary
 *.ico binary
+docs/**/*.pdf -text
+docs/examples/*.zip -text
