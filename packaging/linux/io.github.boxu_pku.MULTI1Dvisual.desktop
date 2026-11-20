@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=MULTI1Dvisual
+GenericName=1D simulation data viewer
+GenericName[zh_CN]=一维模拟数据查看器
+Comment=Explore spatial profiles, time series and heatmaps
+Comment[zh_CN]=查看空间剖面、时间序列和时空热图
+Exec=multi1dvisual
+Icon=io.github.boxu_pku.MULTI1Dvisual
+Terminal=false
+Categories=Science;DataVisualization;
+Keywords=MULTI1D;plot;heatmap;profile;
+StartupWMClass=multi1dvisual

@@ -4,6 +4,7 @@ fort.10
 
 # PyInstaller build output
 dist/
+build/
 
 # Runtime logs
 logs/

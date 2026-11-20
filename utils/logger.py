@@ -3,7 +3,9 @@
 import logging
 import os
 import glob
+import sys
 from datetime import datetime
+from utils.config import Config
 
 
 class Logger:
@@ -25,9 +27,7 @@ class Logger:
             return
 
         if log_dir is None:
-            # Save logs in a 'logs' directory next to main.py
-            app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            log_dir = os.path.join(app_dir, 'logs')
+            log_dir = os.path.join(os.path.dirname(Config.get_config_file_path()), 'logs')
 
         os.makedirs(log_dir, exist_ok=True)
 
@@ -46,13 +46,13 @@ class Logger:
         file_handler = logging.FileHandler(log_file, encoding='utf-8')
         file_handler.setFormatter(formatter)
 
-        stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(formatter)
-
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.INFO)
         root_logger.addHandler(file_handler)
-        root_logger.addHandler(stream_handler)
+        if sys.stderr is not None:
+            stream_handler = logging.StreamHandler()
+            stream_handler.setFormatter(formatter)
+            root_logger.addHandler(stream_handler)
 
         cls._cleanup_old_logs(log_dir)
         cls._initialized = True

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.boxu_pku.MULTI1Dvisual</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <name>MULTI1Dvisual</name>
+  <developer id="io.github.boxu_pku">
+    <name>Bo Xu</name>
+    <name xml:lang="zh-CN">徐博</name>
+  </developer>
+  <summary>Explore spatial profiles and time series from MULTI1D simulations</summary>
+  <summary xml:lang="zh-CN">查看 MULTI1D 模拟的空间剖面和时间序列</summary>
+  <description>
+    <p>Open MULTI1D output files, compare curves at several times and inspect
+    space–time heatmaps. Figures and data tables can be exported from the viewer.</p>
+    <p xml:lang="zh-CN">打开 MULTI1D 输出文件，比较不同时刻的曲线，查看时空热图，并导出图片和数据表。</p>
+  </description>
+  <launchable type="desktop-id">io.github.boxu_pku.MULTI1Dvisual.desktop</launchable>
+  <url type="homepage">https://github.com/boxu-pku/MULTI1Dvisual</url>
+  <provides><binary>multi1dvisual</binary></provides>
+  <content_rating type="oars-1.1"/>
+</component>

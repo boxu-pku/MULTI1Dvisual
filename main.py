@@ -5,13 +5,11 @@ A GUI application for visualizing MULTI1D simulation output files.
 Supports direct reading of fort.10 binary files.
 """
 import sys
-import os
-
-# Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 
 from ui.main_window import MainWindow
 from utils.config import Config
@@ -31,8 +29,12 @@ def main():
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
     app = QApplication(sys.argv)
-    app.setApplicationName(Config.APP_NAME)
+    app.setApplicationName("multi1dvisual")
+    app.setApplicationDisplayName("MULTI1Dvisual")
     app.setApplicationVersion(Config.APP_VERSION)
+    app.setDesktopFileName("io.github.boxu_pku.MULTI1Dvisual")
+    icon_path = Path(__file__).resolve().parent / "resources" / "icons" / "multi1dvisual.png"
+    app.setWindowIcon(QIcon(str(icon_path)))
 
     # Set style
     app.setStyle('Fusion')

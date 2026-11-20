@@ -1,5 +1,9 @@
 # MULTI1D Visualizer v2.3.1
 
+<img src="resources/icons/multi1dvisual.png" alt="MULTI1Dvisual" width="64">
+
+[Linux and Windows installers](#installation-guide) · [中文](README.md)
+
 ## Version Information
 - **Version**: v2.3.1
 - **Release Date**: June 1, 2026
@@ -157,11 +161,11 @@ Plot spatiotemporal distribution heatmaps.
 ## System Requirements
 
 ### Operating Systems
-- Windows 7/10/11
-- Linux (Ubuntu, Fedora, etc.)
-- macOS 10.13+
+- Ubuntu, Debian or Fedora graphical desktop
+- Windows 10/11 x64 with the setup wizard
+- macOS from a source checkout
 
-### Python Environment
+### Python Environment for Running from Source
 - Python 3.7 or higher
 - Python 3.8+ recommended
 
@@ -170,69 +174,43 @@ Plot spatiotemporal distribution heatmaps.
 - NumPy 1.18+ (Numerical computing)
 - Matplotlib 3.1+ (Plotting)
 - SciPy 1.3+ (Scientific computing)
-- Pandas 1.0+ (Data processing, optional)
+- Pandas 1.0+ (ASCII input and table export)
 
 ### Hardware Requirements
-- Minimum: 2GB RAM, 500MB disk space
+- At least 2 GB RAM. The Linux package manager displays the disk space needed for any missing dependencies.
 - Recommended: 4GB+ RAM, more memory needed for large datasets
 
 ---
 
 ## Installation Guide
 
-### Method 1: Using pip (Recommended)
+| Desktop | Installer | How to install |
+| --- | --- | --- |
+| Ubuntu / Debian | `multi1dvisual_2.3.1-1_all.deb` | Double-click the file, open it with your system package installer and select **Install**. |
+| Fedora | `multi1dvisual-2.3.1-1.noarch.rpm` | Double-click the file, open it in Software or Discover and select **Install**. |
+| Windows 10/11 x64 | `MULTI1Dvisual-Setup-2.3.1-x64.exe` | Open the installer, choose the language and select a desktop shortcut if desired. Python and the runtime libraries are included. |
 
-1. Ensure Python 3.7+ is installed
-2. Open command terminal and execute:
-```bash
-pip install PyQt5 numpy matplotlib scipy pandas
+On Linux, the package manager installs missing dependencies from your distribution repositories. The first installation may need Internet access. Open **MULTI1Dvisual** from the applications menu. To install from a terminal, run the matching command in the download directory.
+
+```sh
+# Ubuntu / Debian
+sudo apt install ./multi1dvisual_2.3.1-1_all.deb
+
+# Fedora
+sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
 ```
 
-### Method 2: Using conda
+Open a newer package to upgrade. To uninstall, use the system software manager, `sudo apt remove multi1dvisual` or `sudo dnf remove multi1dvisual`. Settings and logs live in `~/.MULTI1D可视化工具/`.
 
-```bash
-conda install PyQt5 numpy matplotlib scipy pandas
-```
-
-### Method 3: Install from Source
-
-1. Clone or download the project code
-2. Navigate to project directory
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-### Verify Installation
-
-Run the following command to verify:
-```bash
-python -c "import PyQt5; import numpy; import matplotlib; import scipy; print('All dependencies installed successfully!')"
-```
+For a source checkout, run `python -m pip install -r requirements.txt` in a virtual environment at the project root, then run `python main.py`. To build the installers, see the [packaging instructions](packaging/README.md).
 
 ---
 
 ## Quick Start
 
-### For Windows Users
-
-1. Double-click `run.bat` or execute in command line:
-```bash
-cd MULTI1Dvisual
-python main.py
-```
-
-### For Linux/macOS Users
-
-Execute in terminal:
-```bash
-cd MULTI1Dvisual
-python main.py
-```
-
 ### Basic Workflow
 
-1. **Launch Program**: Run main.py or double-click run.bat
+1. **Launch Program**: Open **MULTI1Dvisual** from the applications menu or the Windows Start menu. On a Linux desktop you can also run `multi1dvisual`.
 2. **Open Data File**:
    - Click "Open fort.10..." button on toolbar
    - Or via menu: File → Open fort.10
@@ -617,7 +595,7 @@ python main.py
 MULTI1Dvisual/
 ├── main.py                    # Program entry point
 ├── run.bat                    # Windows startup script
-├── run.sh                     # Linux/macOS startup script
+├── packaging/                 # Native Linux packages and Windows setup wizard
 ├── requirements.txt           # Python dependencies list
 ├── README.md                  # Project documentation (Chinese)
 ├── README_EN.md               # Project documentation (English)

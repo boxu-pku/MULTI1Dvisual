@@ -1,5 +1,9 @@
 # MULTI1D可视化工具 v2.3.1
 
+<img src="resources/icons/multi1dvisual.png" alt="MULTI1Dvisual" width="64">
+
+[Linux 和 Windows 桌面安装](#安装指南) · [English](README_EN.md)
+
 ## 版本信息
 - **版本**: v2.3.1
 - **发布日期**: 2026-06-01
@@ -157,11 +161,11 @@ MULTI1D可视化工具是一个专门用于可视化MULTI1D仿真程序输出结
 ## 系统要求
 
 ### 操作系统
-- Windows 7/10/11
-- Linux (Ubuntu, Fedora, etc.)
-- macOS 10.13+
+- Ubuntu、Debian 或 Fedora 图形桌面
+- Windows 10/11 x64（安装向导）
+- macOS 可从源码启动
 
-### Python环境
+### 从源码启动所需的 Python 环境
 - Python 3.7 或更高版本
 - 建议使用 Python 3.8+
 
@@ -170,69 +174,43 @@ MULTI1D可视化工具是一个专门用于可视化MULTI1D仿真程序输出结
 - NumPy 1.18+ (数值计算)
 - Matplotlib 3.1+ (绘图)
 - SciPy 1.3+ (科学计算)
-- Pandas 1.0+ (数据处理，可选)
+- Pandas 1.0+ (ASCII 数据读取与表格导出)
 
 ### 硬件要求
-- 最低：2GB RAM, 500MB 硬盘空间
+- 至少 2 GB 内存。Linux 安装器会按本机缺少的依赖显示所需磁盘空间。
 - 推荐：4GB+ RAM, 处理大型数据集时需要更多内存
 
 ---
 
 ## 安装指南
 
-### 方法一：使用pip安装（推荐）
+| 系统 | 安装文件 | 安装方法 |
+| --- | --- | --- |
+| Ubuntu / Debian 桌面 | `multi1dvisual_2.3.1-1_all.deb` | 双击，用系统软件安装器打开，点击「安装」。 |
+| Fedora 桌面 | `multi1dvisual-2.3.1-1.noarch.rpm` | 双击，用「软件」或 Discover 打开，点击「安装」。 |
+| Windows 10/11 x64 | `MULTI1Dvisual-Setup-2.3.1-x64.exe` | 双击安装向导，可选择简体中文和桌面快捷方式。安装包包含 Python 与运行库。 |
 
-1. 确保已安装Python 3.7+
-2. 打开命令行终端，执行：
-```bash
-pip install PyQt5 numpy matplotlib scipy pandas
+Linux 安装器会从发行版软件源补齐缺少的依赖，首次安装可能需要联网。安装完成后，在应用菜单搜索 **MULTI1Dvisual** 即可打开。也可以在安装文件所在目录选择对应的命令。
+
+```sh
+# Ubuntu / Debian
+sudo apt install ./multi1dvisual_2.3.1-1_all.deb
+
+# Fedora
+sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
 ```
 
-### 方法二：使用conda安装
+安装新版软件包即可升级。卸载可使用系统软件管理器，或执行 `sudo apt remove multi1dvisual`、`sudo dnf remove multi1dvisual`。用户设置和日志位于 `~/.MULTI1D可视化工具/`。
 
-```bash
-conda install PyQt5 numpy matplotlib scipy pandas
-```
-
-### 方法三：从源码安装
-
-1. 克隆或下载项目代码
-2. 进入项目目录
-3. 安装依赖：
-```bash
-pip install -r requirements.txt
-```
-
-### 验证安装
-
-运行以下命令验证安装：
-```bash
-python -c "import PyQt5; import numpy; import matplotlib; import scipy; print('所有依赖安装成功！')"
-```
+从源码启动时，在项目根目录的 Python 虚拟环境中运行 `python -m pip install -r requirements.txt`，然后运行 `python main.py`。要自行生成安装文件，请参阅[打包说明](packaging/README.md)。
 
 ---
 
 ## 快速开始
 
-### Windows用户
-
-1. 双击运行 `run.bat` 或在命令行中执行：
-```bash
-cd MULTI1Dvisual
-python main.py
-```
-
-### Linux/macOS用户
-
-在终端中执行：
-```bash
-cd MULTI1Dvisual
-python main.py
-```
-
 ### 基本使用流程
 
-1. **启动程序**：运行main.py或双击run.bat
+1. **启动程序**：在应用菜单或 Windows 开始菜单中选择 **MULTI1Dvisual**。Linux 桌面也可直接运行 `multi1dvisual`。
 2. **打开数据文件**：
    - 点击工具栏的"打开fort.10..."按钮
    - 或通过菜单：文件 → 打开fort.10
@@ -617,7 +595,7 @@ python main.py
 MULTI1Dvisual/
 ├── main.py                    # 程序入口
 ├── run.bat                    # Windows启动脚本
-├── run.sh                     # Linux/macOS启动脚本
+├── packaging/                 # Linux 原生软件包和 Windows 安装向导
 ├── requirements.txt           # Python依赖列表
 ├── README.md                  # 项目说明文档（中文）
 ├── README_EN.md               # 项目说明文档（英文）
