@@ -1,3 +1,4 @@
+\input{chapters/tool_guide}
 \chapterpage{profiles}{Extract profiles from a heatmap}
 \subhead{Read values along a drawn line}
 Plot the example heatmap as in Chapter~\ref{heatmap}. \ui{Tools → Heatmap Profile Extractor} (\keys{Ctrl+H}) stays open while you work on the canvas.
@@ -5,11 +6,13 @@ Plot the example heatmap as in Chapter~\ref{heatmap}. \ui{Tools → Heatmap Prof
 \item Click \ui{Start Extraction}. On the heatmap, drag the left mouse button along 50 µm, from the first time to the last. Release to open the profile window.
 \item Inspect the curve, then use its \ui{Export Data} or \ui{Save Image}. Close the result window. In the extractor, \ui{Stop} ends capture and \ui{Clear Marks} removes the line.
 \end{enumerate}
-\Figure{profile}{A horizontal extraction across the example. The maximum lies near the middle of the line. A manually drawn line can miss the exact centre.}{86mm}
+\Figure{profile}{A horizontal extraction across the example. The maximum lies near the middle of the line. A manually drawn line can miss the exact centre.}{75mm}
 The extractor samples 200 equally spaced points on the drawn line using the displayed heatmap grid. Its horizontal axis is distance from the start in plotted coordinate units. Along this horizontal line only time changes, so distance numerically matches elapsed ns. Along an oblique line, the calculation combines the numerical changes on both axes. Record both endpoints and their units to interpret that trace later.
+\subhead{Read the axes and exported columns}
+With time on the horizontal axis, a vertical line gives a spatial profile at one displayed time. Reverse a line to reverse sample order. The CSV headers here are \code{Distance,T}. For endpoints (0 ns, 50 µm) and (4 ns, 50 µm), both end values are about 2.82 eV and the largest sampled value is about 7.97 eV. Hand-drawn endpoints can shift these readings.
 \checknote{Sampling at an exact coordinate}{For an exact 50 µm entry and the original output times, use the fixed-position option on the next page. Its CSV and the drawn-line CSV have different columns and sampling.}
 
-\nextpage{extrema}{Find extrema on a defined section}
+\chapterpage{extrema}{Find extrema on a defined section}
 \begin{enumerate}
 \item With the heatmap active, open \ui{Tools → Extreme Finder Tool} (\keys{Ctrl+E}). Choose \ui{Fixed Position}, enter \code{50}, then click \ui{Add Profile}. Comma-separated positions add several rows.
 \item Keep the full range, enable \ui{Find Maxima} and click \ui{Extract \& Find Extremes}. Open the profile-curve tab. For the example, the maximum is 8 eV at 2 ns.
@@ -20,14 +23,48 @@ A fixed-position cut interpolates spatially onto that position at each recorded 
 Edit a profile's range cell to restrict the search, for example \code{1-3} ns for the 50 µm cut. The finder reports a maximum or minimum per specified interval. Its derivative view uses numerical gradients. Near gaps, broad peaks or boundaries, compare against the plotted samples. Save the active image or export the profile table to retain the values as well as the marker.
 \checknote{Table columns}{The extrema CSV uses \code{X} and one column per requested section. Export position cuts and time cuts separately so that every value in the \code{X} column has the same physical unit.}
 
-\chapterpage{annotations}{Annotate and inspect a plot}
+\nextpage{extremeranges}{Compare maxima in separate time windows}
+With the 50 µm fixed-position section from the previous page, double-click its range cell and enter \code{0-1,3-4}. Use an ASCII comma between the two intervals. Enable both maxima and minima and extract again. Each interval is evaluated separately, including its endpoints.
+\Table{Time window}{Results on the 50 µm section}{
+0 to 1 ns & Minimum 2.8120 eV at 0 ns. Maximum 5.6392 eV at 1 ns.\\
+3 to 4 ns & Maximum 5.6392 eV at 3 ns. Minimum 2.8120 eV at 4 ns.\\
+Full time range & Maximum 8.0000 eV at 2 ns. The restricted windows exclude that record.\\}
+\subhead{Which axis carries the interval?}
+For a fixed position, the interval is in the displayed time unit. To compare across the mesh at a single output, start a separate table with \ui{Fixed Time} and enter \code{2} ns. With no interval restriction, the temperature reaches 8 eV at 50 µm. Its range cell now uses the position unit. The derivative tab follows the independent axis of each section.
+\subhead{Keep figures, numbers and search settings}
+\ui{Save All Images} with the base name \code{cuts.png} writes \code{cuts_heatmap.png}, \code{cuts_profile.png} and \code{cuts_derivative.png}. The profile image and the results panel identify extrema. The CSV contains the section samples, including values outside the search windows. Use it to reproduce the search numerically.
+The save and load configuration buttons store profile definitions, search ranges, extrema choices, legend and derivative settings in \code{extreme_finder_config.json} in the user settings folder. When applying a saved configuration to another case, check the active field, units and covered range.
+
+\chapterpage{annotations}{Annotate a figure for publication}
 \subhead{Label a feature for a report}
 With the three spatial profiles visible, press \keys{Ctrl+M}. Choose \ui{Arrow}, set colour and line width, and drag from the label side towards the 2 ns peak. Choose \ui{Text}, click beside the arrow and enter \code{2 ns}. Use the annotation list to select and delete an individual mark.
 \Figure{annotation}{An arrow and a text label identify the central peak on the plotted curves. The saved image can carry the mark without changing any of the underlying values.}{72mm}
-The annotation palette also offers a straight line, rectangle and ellipse, style, transparency and text controls. Use \ui{Export Annotated Image} while the marks are visible. Replotting rebuilds the axes, so export the annotated figure before changing the plot. The tab's numerical CSV contains the underlying values.
-\subhead{Inspect a detected trajectory}
-With a suitable dataset loaded, activate the heatmap and choose \ui{Tools → Shock Wave Detector} (\keys{Ctrl+D}). The dialog can show the field, profiles and a detected trajectory, with controls for inspecting results, saving the heatmap and exporting a trajectory. Check the indicated position against the source profile at the same time. Keep the field, axes, units and detector configuration with any exported measurement. The practice case contains a smooth temperature peak and demonstrates the plotting tools.
+\subhead{Choose a mark and keep an editable working view}
+Drag from start to end for a line or arrow. For a rectangle or ellipse, drag between opposite corners of its bounding box. For text, click once and enter the label. Choose the colour, stroke width, line style, opacity or text font before adding the next mark. To restyle a finished mark, select its entry in the colour-coded annotation list, delete it and draw it again.
+\subhead{Save the annotated result}
+Use \ui{Export Annotated Image} and choose PNG, PDF or SVG. A PDF or SVG preserves the overlays with the figure for typesetting. Reopen the output and check the arrowhead and text at their final size. \ui{Clear All Annotations} removes all marks after confirmation. Export before replotting, which rebuilds the axes. The spatial tab's CSV still contains the source values.
 \checknote{Mouse interaction}{Close the annotation or extraction tool to release the plot for ordinary drag-to-zoom navigation.}
+
+\input{chapters/shock_detector}
+
+\chapterpage{recorder}{Record and replay a plotting session}
+Use \code{quickstart.out} for this exercise. The generated Python script embeds the classic binary parser. The GUI can also read decimal cases and formatted inputs. For those inputs, save figures and numerical tables directly from the GUI.
+\begin{enumerate}
+\item Open \code{quickstart.out}. Press \keys{Ctrl+R} and click \ui{Start Recording}. The recorder includes the active file as an operation.
+\item Return to \ui{Spatial Plot}, choose \ui{T}, \ui{XC}, \ui{um}, \ui{eV} and moment \ui{\#4}. Click \ui{Plot}. Keep the recorder open while plotting, return to it and click \ui{Stop Recording}, then \ui{Generate Script}.
+\item Save the script as \code{example_replay.py} in a writable folder with \code{quickstart.out}. Change to that directory in a terminal with Python, NumPy, SciPy and Matplotlib installed.
+\end{enumerate}
+\begin{verbatim}
+python example_replay.py
+\end{verbatim}
+\Figure{recorder}{After recording one plot on an already loaded file, the counter shows two operations. Generate Script is now available.}{44mm}
+The example produces \code{example_replay_fig1_spatial_plot.png} in the working directory. The script first tries the recorded absolute input path, then a file of the same name beside the script. Open the PNG and verify a single 2 ns profile with a maximum near 50 µm. Inspect the exported CSV separately if you need the exact cell value.
+\subhead{Record two figures on one file}
+Keep the recorder window open while working. Closing it stops a recording. To extend the example, plot the spatial profile and then a \code{T} heatmap before pressing \ui{Stop Recording}. The count is now three, including the input file. Save as \code{demo_replay.py}. Running it produces \code{demo_replay_fig1_spatial_plot.png} and \code{demo_replay_fig2_heatmap.png}.
+Supported actions include spatial plots, global and single-cell or multi-cell time histories, heatmaps, extreme finding and drawn-line extraction. The generated script keeps one input path. Record each dataset separately. Save annotations and shock trajectories with their own export buttons.
+\checknote{Keep the previous recording}{Starting again clears the operation list. Generate and name the script before starting the next case.}
+
+\input{chapters/standard_figures}
 
 \chapterpage{export}{Save figures and numerical data}
 Use \keys{Ctrl+S} on the active plotting tab to save the current figure. Choose PNG for a raster image or PDF for a figure to place in a document. Type the extension explicitly. The main plotting tabs use a default save resolution of 300 dpi for raster output.
@@ -59,20 +96,6 @@ The header is wrapped here for readability. A CSV reader sees four fields on one
 In version 2.3.1 the spatial CSV uses the first stored coordinate vector for its single position column. The ordinary heatmap CSV likewise resamples each field record using that reference grid. The on-screen Eulerian heatmap uses each record's coordinates. For quantitative work on a moving grid, pair the original field with \code{XC} or \code{X} at the same time from the source output. For a fixed physical position across time, use the fixed-position section in the extreme finder and retain its axis units.
 \checknote{Why a value can differ slightly}{The plotted fixed-time profile has original cell samples. A heatmap grid point and a point on a drawn line may fall between two centres. Compare at matching coordinates, times and value units.}
 
-\chapterpage{recorder}{Record and replay a plotting session}
-Use \code{quickstart.out} for this exercise. The generated Python script embeds the classic binary parser. The GUI can also read decimal cases and formatted inputs. For those inputs, save figures and numerical tables directly from the GUI.
-\begin{enumerate}
-\item Open \code{quickstart.out}. Press \keys{Ctrl+R} and click \ui{Start Recording}. The recorder includes the active file as an operation.
-\item Return to \ui{Spatial Plot}, choose \ui{T}, \ui{XC}, \ui{um}, \ui{eV} and moment \ui{\#4}. Click \ui{Plot}. Reopen the recorder if needed, click \ui{Stop Recording}, then \ui{Generate Script}.
-\item Save the script as \code{example_replay.py} in a writable folder with \code{quickstart.out}. Change to that directory in a terminal with Python, NumPy, SciPy and Matplotlib installed.
-\end{enumerate}
-\begin{verbatim}
-python example_replay.py
-\end{verbatim}
-\Figure{recorder}{After recording one plot on an already loaded file, the counter shows two operations. Generate Script is now available.}{54mm}
-The example produces \code{example_replay_fig1_spatial_plot.png} in the working directory. The script first tries the recorded absolute input path, then a file of the same name beside the script. Open the PNG and verify a single 2 ns profile with a maximum near 50 µm. Inspect the exported CSV separately if you need the exact cell value.
-\checknote{Starting a new recording}{A new recording clears the prior operation list. Generate and name the previous script first. A plotting replay captures supported operations. Save interactive markups separately as annotated images.}
-
 \chapterpage{trouble}{Troubleshoot a session}
 \Table{Symptom}{What to check}{
 Double-click shows package contents & Choose the system software installer in \ui{Open With}, or run the local-file APT or DNF command in Chapter~\ref{install}. Review any dependency error printed by the package manager.\\
@@ -101,5 +124,5 @@ In your home directory, open the hidden \textsf{.MULTI1D可视化工具} folder 
 \code{R}, \code{P}, \code{PT} & Mass density, pressure and total pressure respectively. Units on the plotted axes depend on the field and display choice.\\
 \code{ENIE}, \code{ENII}, \code{ENKI} & Global electron internal energy, ion internal energy and kinetic energy. Check the producer's units when a field label omits them.\\}
 \subhead{Preferences and project files}
-The application uses \code{config.json} and \code{language_config.json} in the per-user directory described on the previous page. The project README links both manuals and the example. The archive contains \code{quickstart.case}, \code{quickstart.center.dat}, \code{quickstart.scalars.dat} and \code{quickstart.out}. To see exactly how the synthetic numbers were made, open \code{docs/examples/make_quickstart.py} in the source tree.
+The application uses \code{config.json} and \code{language_config.json} in the per-user directory described on the previous page. The project README links both manuals and the example. The archive contains \code{quickstart.case}, \code{quickstart.center.dat}, \code{quickstart.scalars.dat} and \code{quickstart.out}. The \code{moving-edge/} folder adds \code{fort.10} and \code{data.in}. To see exactly how the synthetic numbers were made, open \code{docs/examples/make_quickstart.py} in the source tree.
 \checknote{Project}{Software by Bo Xu. The repository contains the source, package build instructions and editable sources for these manuals. \repo}

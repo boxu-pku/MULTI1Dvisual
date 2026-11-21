@@ -1,0 +1,18 @@
+\chapterpage{standard}{Make standard figures from a case folder}
+Use \code{utils/standard_visuals.py} to make a consistent set of PNGs from an existing case. It reads formatted text \code{fort.10} and the matching \code{data.in} from the same folder. In the practice archive, the first file holds the density and positions at all times. The second describes the example grid for the layout figures.
+\subhead{Run the packaged script on Linux}
+Extract the full archive into a writable directory, then open a terminal in that directory. The following commands assume that \code{moving-edge/} is visible there. Use the system Python with the Linux desktop package.
+\begin{verbatim}
+script=/usr/share/multi1dvisual/utils/standard_visuals.py
+/usr/bin/python3 "$script" moving-edge --vars R \
+    --coords euler,lag --no-driver --outdir figures
+\end{verbatim}
+In a source checkout, set \code{script} to the full path of \code{utils/standard_visuals.py} in that checkout and use the Python environment with the project dependencies. To see the switches, run \verb|python3 "$script" --help|. The Windows desktop installer provides the manuals and practice data. Use a source checkout for the Python command on Windows.
+\Table{File in \code{figures/}}{What to inspect}{
+\code{heat_R_xc.png} & Density versus time and current cell-centre position. Find the rising edge between 18.5 and 30.5 µm across the run.\\
+\code{heat_R_lc.png} & The same field versus initial cell-centre position. The practice grid is stationary, so the edge occupies the same positions in both maps. A moving mesh can give the two views different shapes.\\
+\code{target_layout.png} & Diagram of the initial region, with the label supplied by the example grid metadata.\\
+\code{grid_layout.png} & Initial grid distribution. Compare the uniform spacing with the 60 equally spaced centres used in the practice input.\\}
+\subhead{Change the selection or run without a desktop}
+\code{--vars} accepts the supported keys \code{R,PT,TE}. Request fields present in the case. \code{--coords} accepts \code{euler}, \code{lag}, or both separated by a comma. Omitting \code{--outdir} writes to the case's \code{viz/} directory. \code{--no-driver} skips the optional input-history figure. Layout and grid figures are still written.
+\checknote{Linux terminal without a display}{Some Matplotlib packages check for a display even with Qt in offscreen mode. If you see \code{Invalid DISPLAY variable}, use an environment with Xvfb and repeat the same command with \code{xvfb-run -a} before \code{/usr/bin/python3}. The four output names are the same.}

@@ -22,6 +22,38 @@ def values_record(values):
     return record(struct.pack(f"<{len(values)}d", *values))
 
 
+def moving_edge_example():
+    """Formatted output for a known moving edge, sampled without a solver."""
+    cells = 60
+    centers_um = [i + 0.5 for i in range(cells)]
+    edges_um = list(range(cells + 1))
+    static_names = ["NC"] * cells + ["NI"] * len(edges_um)
+    indices = list(range(1, cells + 1))
+    interface_indices = list(range(1, cells + 2))
+    static_indices = indices + interface_indices
+    field_names = ["TIME"] + ["XC"] * cells + ["X"] * len(edges_um) + ["R"] * cells
+    field_indices = [1] + indices + interface_indices + indices
+    # Each label, index and value occupies one line in formatted fort.10 output.
+    lines = [str(len(static_names)), *static_names, *map(str, static_indices),
+             *map(str, static_indices), str(len(field_names)), *field_names,
+             *map(str, field_indices)]
+    centers_cm = [x * 1e-4 for x in centers_um]
+    edges_cm = [x * 1e-4 for x in edges_um]
+    for time_ns in range(13):
+        edge_um = 18.5 + time_ns
+        density = [1.25 + 0.25 * math.tanh((x - edge_um) / 2) for x in centers_um]
+        values = [time_ns * 1e-9, *centers_cm, *edges_cm, *density]
+        lines.extend(f"{value:.12E}" for value in values)
+    grid_label = (
+        "! Synthetic grid metadata for the plotting example.\n"
+        "&layer\n  nc=60, thick=0.006, r0=1.0, material='Demo grid'\n/\n"
+    )
+    return {
+        "moving-edge/fort.10": ("\n".join(lines) + "\n").encode("ascii"),
+        "moving-edge/data.in": grid_label.encode("ascii"),
+    }
+
+
 def build_archive(destination):
     positions = [5 * j for j in range(21)]  # micrometres
     serials = list(range(1, len(positions) + 1))
@@ -48,6 +80,7 @@ def build_archive(destination):
         "quickstart.center.dat": ("\n".join(centers) + "\n").encode("ascii"),
         "quickstart.scalars.dat": ("\n".join(scalars) + "\n").encode("ascii"),
         "quickstart.out": binary.getvalue(),
+        **moving_edge_example(),
     }
     with ZipFile(destination, "w") as archive:
         for name, data in members.items():

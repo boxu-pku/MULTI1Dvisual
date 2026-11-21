@@ -6,7 +6,7 @@
 
 [English user manual (PDF)](docs/manual_EN/multi1dvisual_manual_en.pdf) · [中文用户手册（PDF）](docs/manual_CN/multi1dvisual_manual_zh.pdf) · [Sample files for the manuals](docs/examples/quickstart.zip)
 
-Open either offline manual from **Help → Documentation** in the installed desktop application.
+Open either offline manual from **Help → Documentation** in the installed desktop application. The tool guide covers the five Tools menu entries and the standard-figure script. The shock-detector exercise uses `moving-edge/fort.10` from the sample archive to check frame-by-frame positions, speed and the trajectory CSV.
 
 ## Version Information
 - **Version**: v2.3.1

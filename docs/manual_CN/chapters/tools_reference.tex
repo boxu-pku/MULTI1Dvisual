@@ -1,3 +1,4 @@
+\input{chapters/tool_guide}
 \chapterpage{profiles}{从热图提取截面}
 \subhead{沿鼠标画出的线段取值}
 按第~\ref{heatmap}~章绘好示例热图。在热图页打开\ui{工具 → 热图分布提取}（\keys{Ctrl+H}），工具窗口会保持打开，主画布仍可操作。
@@ -5,11 +6,13 @@
 \item 点击\ui{开始提取}。在热图约 50 µm 高度，从最早时刻向最晚时刻按住左键水平拖动，松手后会弹出分布曲线窗口。
 \item 在结果窗口选择“导出数据”或“保存当前图片”。关闭结果窗口后，可以在提取工具中点击“停止”结束取样，点击“清除标记”去掉热图上的线段。
 \end{enumerate}
-\Figure{profile}{沿 50 µm 附近水平取样，曲线峰值出现在这条线段的中部。手工拖动时，端点稍有偏差就会改变峰值读数。}{86mm}
+\Figure{profile}{沿 50 µm 附近水平取样，曲线峰值出现在这条线段的中部。手工拖动时，端点稍有偏差就会改变峰值读数。}{75mm}
 程序沿线段从头至尾等距取 200 个点，并在已显示的热图网格上插值。结果横轴 \ui{Distance along line} 表示从起点算起的坐标距离。本例沿水平线取样，只有时间发生变化，距离数值等于经过的 ns 数。若斜着取线，距离同时使用两轴的数值差。保存曲线时，应记下两个端点及其单位，便于他人还原取样位置。
+\subhead{怎样读坐标和导出列}
+当横轴为时间时，竖直线给出某一显示时刻的空间剖面。反向拖动会颠倒采样顺序。本例 CSV 列名为 \code{Distance,T}。端点取（0 ns，50 µm）和（4 ns，50 µm）时，两端温度均约为 2.82 eV，沿线最大采样值约为 7.97 eV。手工选点有少许偏移，读数就会随之变化。
 \checknote{精确指定位置}{要在 50 µm 的准确位置、按原始输出时刻取值，可使用下一页的“固定位置”截面。它与鼠标线段提取使用不同的采样点，导出表的列也不同。}
 
-\nextpage{extrema}{在指定截面上寻找极值}
+\chapterpage{extrema}{在指定截面上寻找极值}
 \begin{enumerate}
 \item 保持热图页为当前页面，打开\ui{工具 → 极值寻找工具}（\keys{Ctrl+E}）。选“固定位置”，输入 \code{50}，点击“添加Profile”。用英文逗号分隔可一次添加多个位置。
 \item 保留全部范围，勾选“寻找极大值”，点击\ui{提取并寻找极值}。切换到“分布曲线”。本例在 2 ns 找到 8 eV 的最大值。
@@ -20,14 +23,48 @@
 在分布表的范围栏中可以限定搜索区间。例如对 50 µm 的时间曲线输入 \code{1-3}，即只在 1 至 3 ns 内找极值。每个区间可分别求最大值或最小值。“导数曲线”使用数值梯度。峰较宽、靠近边界或中间有缺测时，应同时查看原始采样点。可以保存图像或导出截面数值。
 \checknote{导出时区分单位}{极值工具的 CSV 首列为 \code{X}，其余每列对应一个截面。建议将固定位置和固定时间的截面分别导出，使每个文件的首列具有一致的物理单位。}
 
-\chapterpage{annotations}{标注图形与检查诊断结果}
+\nextpage{extremeranges}{分两个时间窗比较极值}
+沿用上一页 50 µm 的固定位置截面，双击表格的范围栏，输入 \code{0-1,3-4}。两个区间用英文逗号分隔。同时勾选寻找极大值和极小值，再次提取。每个区间独立搜索，并包括两端的采样点。
+\Table{时间窗口}{50 µm 截面的结果}{
+0 至 1 ns & 最小值为 0 ns 时的 2.8120 eV，最大值为 1 ns 时的 5.6392 eV。\\
+3 至 4 ns & 最大值为 3 ns 时的 5.6392 eV，最小值为 4 ns 时的 2.8120 eV。\\
+全部时间 & 2 ns 时达到 8.0000 eV。上面两个受限窗口均跳过了这一帧。\\}
+\subhead{范围栏采用哪条坐标轴}
+固定位置时，范围栏使用热图显示的时间单位。要观察同一时刻的空间变化，可另建一张表，选“固定时间”并输入 \code{2} ns。搜索整个位置范围，温度在 50 µm 达到 8 eV。此时范围栏用位置单位。导数曲线也对相应截面的横轴求导。
+\subhead{分别保留图像、数值和搜索条件}
+点击“保存所有图片”，输入 \code{cuts.png}。工具会分别保存热图 \code{cuts_heatmap.png}、分布曲线 \code{cuts_profile.png} 和导数曲线 \code{cuts_derivative.png}。在分布曲线图与结果面板中可以查看极值标记和读数。CSV 包含整条截面的采样值，限定窗口以外的样本也在表内，可据此独立复算。
+保存和加载配置可以复用截面定义、搜索范围、极值选项、图例和导数设置。配置位于用户设置目录的 \code{extreme_finder_config.json}。换算例加载配置时，再核对当前变量、单位和数据覆盖范围。
+
+\chapterpage{annotations}{标注图中的特征并导出}
 \subhead{给报告中的曲线加注释}
 显示三条空间曲线后按 \keys{Ctrl+M}。在标注工具中选择“箭头”，设定颜色和线宽，从准备放文字的位置拖向 2 ns 的峰。改选“文字”，点击箭头旁边，在弹窗中输入 \code{2 ns}。要删除某一个标记，可以在标注列表中选中该项再删除。
 \Figure{annotation}{箭头和文字标出了中间的温度峰。保存带标注图像，可以让读者直接识别该曲线及其对应时刻。}{72mm}
-工具还支持直线、矩形和椭圆，并可设置透明度、线型及文字样式。请在标注仍可见时使用“导出带标注图片”。重新绘制会重建坐标轴，建议先保存标注图像，再修改绘图选项。标签页导出的数值表记录原始取值。
-\subhead{查看检测工具给出的轨迹}
-在适用的数据集上，先切换到热图，再打开\ui{工具 → 冲击波检测}（\keys{Ctrl+D}）。窗口可显示场量、剖面和检测轨迹，并可保存热图、导出轨迹数据。逐个时刻核对轨迹点与原始剖面上的位置，同时保留所用场量、坐标、单位和配置，方便复查。练习包只包含平滑移动的温度峰，适合演示前面的绘图与取样操作。
+\subhead{选择标记并调整样式}
+直线和箭头从起点拖向终点。矩形和椭圆通过拖出外接框的两个对角点确定范围。文字只需单击一次，再输入内容。先选颜色、线宽、线型、透明度或字体，再放置下一条标注。要改动已经画好的标记，在按颜色列出的标注列表中选中它，删除后用新样式重画。
+\subhead{把标记连同图一起保存}
+点击\ui{导出带标注图片}，选择 PNG、PDF 或 SVG。PDF 或 SVG 便于排版时保留矢量标注。重新打开文件，按最终使用尺寸检查箭头和文字。“清除所有标注”经确认后会清空标记。重新绘图会重建坐标轴，最好先完成导出。空间图页的 CSV 保留曲线的数值。
 \checknote{恢复画布操作}{关闭标注工具或停止线段提取后，再用左键拖动进行普通框选缩放。}
+
+\input{chapters/shock_detector}
+
+\chapterpage{recorder}{录制并回放绘图操作}
+练习使用 \code{quickstart.out}。生成的 Python 脚本内嵌标准二进制解析器。GUI 还可以读取十进制算例和支持的格式化输入，这些文件的图像和数值表可直接从 GUI 中导出。
+\begin{enumerate}
+\item 打开 \code{quickstart.out}。按 \keys{Ctrl+R} 打开“记录代码”，点击\ui{开始录制}。当时已打开的文件也会计入操作数。
+\item 回到空间图，选择 \ui{T}、\ui{XC}、\ui{um}、\ui{eV} 和时刻 \ui{\#4}，点击\ui{绘制}。录制窗口保持打开，画好后回到该窗口，点击\ui{停止录制}，再点\ui{生成脚本}。
+\item 将脚本命名为 \code{example_replay.py}，保存到自己可写的目录，并把 \code{quickstart.out} 放在旁边。在装有 Python、NumPy、SciPy、Matplotlib 的终端中切换到该目录，运行下列命令。
+\end{enumerate}
+\begin{verbatim}
+python example_replay.py
+\end{verbatim}
+\Figure{recorder}{先开文件再录一张图，停止后计数为 2。两项记录分别对应已载入的数据和一次绘图操作，此时可以生成脚本。}{44mm}
+示例会在当前工作目录生成 \code{example_replay_fig1_spatial_plot.png}。脚本先尝试录制时的绝对输入路径，找不到时再检查脚本旁边的同名文件。打开结果图，应看到 2 ns 的一条曲线，峰位在 50 µm 附近。若要核查准确的单元数值，另存空间图 CSV。
+\subhead{试录同一文件上的两张图}
+录制时让窗口保持打开，关闭它会停止录制。要扩展上述练习，可在空间图画好后再绘制一幅 \code{T} 热图，最后才点“停止录制”。计数应为 3，包含一次打开文件和两次绘图。另存为 \code{demo_replay.py} 并运行，可得到 \code{demo_replay_fig1_spatial_plot.png} 和 \code{demo_replay_fig2_heatmap.png}。
+录制支持空间图、全局量与单格或多格的时间曲线、热图、极值寻找和画线提取。生成脚本只保留一个输入文件路径，每个算例应单独录制。带标注图片及冲击波轨迹分别用各自窗口的导出按钮保存。
+\checknote{保留上一段录制}{重新开始会清空之前的操作。切换到下一个算例前，先生成脚本并单独命名。}
+
+\input{chapters/standard_figures}
 
 \chapterpage{export}{保存图像与导出数值}
 在当前绘图页按 \keys{Ctrl+S} 保存图像。PNG 适合直接插入报告，PDF 适合排版。输入文件名时写上扩展名。主绘图页保存栅格图像的默认分辨率是 300 dpi。
@@ -59,20 +96,6 @@ t=4.0000ns T (eV)
 在 2.3.1 版中，空间图 CSV 的唯一坐标列取自第一条时间记录。普通热图的 CSV 也使用这个参考网格对每一时刻的场量重新取样。屏幕上的欧拉热图则使用各时刻自己的位置。对运动网格做定量比较时，应从源输出中取同一时刻的场量和 \code{XC} 或 \code{X} 配对。若要比较某个固定空间位置在不同时刻的值，可用极值工具的“固定位置”截面，并保留坐标单位。
 \checknote{为什么会差一点}{固定时刻的空间曲线保留原有的单元采样。热图网格点和手画线上的采样点都可能落在两个中心之间。核对之前，先统一时间、位置和数值单位。}
 
-\chapterpage{recorder}{录制并回放绘图操作}
-练习使用 \code{quickstart.out}。生成的 Python 脚本内嵌标准二进制解析器。GUI 还可以读取十进制算例和支持的格式化输入，这些文件的图像和数值表可直接从 GUI 中导出。
-\begin{enumerate}
-\item 打开 \code{quickstart.out}。按 \keys{Ctrl+R} 打开“记录代码”，点击\ui{开始录制}。当时已打开的文件也会计入操作数。
-\item 回到空间图，选择 \ui{T}、\ui{XC}、\ui{um}、\ui{eV} 和时刻 \ui{\#4}，点击\ui{绘制}。回到录制窗口，点击\ui{停止录制}，再点\ui{生成脚本}。
-\item 将脚本命名为 \code{example_replay.py}，保存到自己可写的目录，并把 \code{quickstart.out} 放在旁边。在装有 Python、NumPy、SciPy、Matplotlib 的终端中切换到该目录，运行下列命令。
-\end{enumerate}
-\begin{verbatim}
-python example_replay.py
-\end{verbatim}
-\Figure{recorder}{先开文件再录一张图，停止后计数为 2。两项记录分别对应已载入的数据和一次绘图操作，此时可以生成脚本。}{54mm}
-示例会在当前工作目录生成 \code{example_replay_fig1_spatial_plot.png}。脚本先尝试录制时的绝对输入路径，找不到时再检查脚本旁边的同名文件。打开结果图，应看到 2 ns 的一条曲线，峰位在 50 µm 附近。若要核查准确的单元数值，另存空间图 CSV。
-\checknote{开始下一次录制}{点击“开始录制”会清空先前的操作列表。先为需要保留的操作命名并生成脚本。录制器记录支持的绘图操作，交互式标注请单独保存成图片。}
-
 \chapterpage{trouble}{常见问题与诊断}
 \Table{遇到的问题}{检查方法}{
 双击后看到包内文件 & 在“打开方式”中选择软件安装器，或执行第~\ref{install}~章的本地 APT／DNF 安装命令。查看包管理器给出的依赖错误。\\
@@ -101,5 +124,5 @@ python example_replay.py
 \code{R}、\code{P}、\code{PT} & 分别为质量密度、压强和总压强。坐标轴标注取决于变量和所选显示单位。\\
 \code{ENIE}、\code{ENII}、\code{ENKI} & 分别为全局电子内能、离子内能和动能。若图中未标注能量单位，以输出程序对该字段的定义为准。\\}
 \subhead{偏好设置与项目文件}
-上一页的用户目录中还保存 \code{config.json} 和 \code{language_config.json}。项目首页列出两种语言的手册和练习数据。练习压缩包内含 \code{quickstart.case}、\code{quickstart.center.dat}、\code{quickstart.scalars.dat} 和 \code{quickstart.out}。如果要查看合成数值的具体定义，源码中有 \code{docs/examples/make_quickstart.py}。
+上一页的用户目录中还保存 \code{config.json} 和 \code{language_config.json}。项目首页列出两种语言的手册和练习数据。练习压缩包内含 \code{quickstart.case}、\code{quickstart.center.dat}、\code{quickstart.scalars.dat} 和 \code{quickstart.out}，另有 \code{moving-edge/} 目录，内含 \code{fort.10} 与 \code{data.in}。如果要查看合成数值的具体定义，源码中有 \code{docs/examples/make_quickstart.py}。
 \checknote{项目}{软件作者为徐博。仓库中提供源码、安装包构建说明和两份手册的可编辑源文件。\repo}

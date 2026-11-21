@@ -6,7 +6,7 @@
 
 [中文用户手册（PDF）](docs/manual_CN/multi1dvisual_manual_zh.pdf) · [English user manual (PDF)](docs/manual_EN/multi1dvisual_manual_en.pdf) · [手册配套示例](docs/examples/quickstart.zip)
 
-安装桌面版后，从“帮助 → 使用文档”可离线打开任一语言的手册。
+安装桌面版后，从“帮助 → 使用文档”可离线打开任一语言的手册。手册的工具指南列出五个菜单工具和一个标准出图脚本。冲击波检测练习使用示例包中的 `moving-edge/fort.10`，可逐帧核对密度边缘的位置、速度和轨迹 CSV。
 
 ## 版本信息
 - **版本**: v2.3.1

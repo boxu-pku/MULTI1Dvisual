@@ -1,0 +1,18 @@
+\chapterpage{standard}{从算例目录批量生成标准图}
+独立脚本 \code{utils/standard_visuals.py} 可为已有算例生成一组规格一致的 PNG。它读取同一目录下的格式化文本 \code{fort.10} 和对应的 \code{data.in}。练习中的前者保存各时刻的密度与位置，后者提供绘制初始布局所需的网格描述。
+\subhead{在 Linux 安装版中运行}
+把练习包完整解压到可写目录，在该目录打开终端，确认当前目录中有 \code{moving-edge/}。通过桌面包安装时，可使用系统 Python 运行以下命令。
+\begin{verbatim}
+script=/usr/share/multi1dvisual/utils/standard_visuals.py
+/usr/bin/python3 "$script" moving-edge --vars R \
+    --coords euler,lag --no-driver --outdir figures
+\end{verbatim}
+从源码运行时，把 \code{script} 指向源码内 \code{utils/standard_visuals.py} 的绝对路径，使用已装好项目依赖的 Python 环境。运行 \verb|python3 "$script" --help| 可查看参数。Windows 桌面安装包提供手册和练习数据。在 Windows 上运行这个 Python 脚本时，可使用源码和相应的 Python 环境。
+\Table{\code{figures/} 中的文件}{打开后检查什么}{
+\code{heat_R_xc.png} & 密度随时间和当前网格中心位置的变化。整个练习中，密度边缘从 18.5 µm 移至 30.5 µm。\\
+\code{heat_R_lc.png} & 同一密度场以初始网格中心为纵轴。练习网格静止，所以边缘在两幅热图中经过相同位置。对运动网格，两图的形状可以不同。\\
+\code{target_layout.png} & 初始区域的布局图，区域标签来自练习中的网格描述。\\
+\code{grid_layout.png} & 初始网格分布图，可与输入中 60 个等距排列的中心对照。\\}
+\subhead{更换变量或在无桌面的终端运行}
+\code{--vars} 支持 \code{R,PT,TE}，按文件实际包含的量选择。\code{--coords} 接受 \code{euler}、\code{lag} 或逗号分隔的两项。省略 \code{--outdir} 时，图片写入算例下面的 \code{viz/}。\code{--no-driver} 跳过可选的输入历程图，布局图和网格图仍会生成。
+\checknote{无图形显示的 Linux 终端}{部分发行版的 Matplotlib 在 Qt 离屏模式下也会检查显示环境。如果出现 \code{Invalid DISPLAY variable}，可在装有 Xvfb 的环境下，将 \code{xvfb-run -a} 加在 \code{/usr/bin/python3} 前，再执行同一条命令。四个输出文件的名称相同。}

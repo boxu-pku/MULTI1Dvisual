@@ -1,0 +1,12 @@
+\chapterpage{tools}{Choose a tool for the question}
+The Tools menu contains five interactive tools. The standard-figure script runs from a terminal and can produce the same set of figures for several cases. Use the table to open the chapter that matches the result you need.
+\Table{What you need}{Where to start and what you can keep}{
+Mark a feature on a figure & \hyperref[annotations]{Annotation Tool, p.~\pageref*{annotations}}. Place arrows, text or shapes on the active canvas. Save the annotated image.\\
+Read values along a line & \hyperref[profiles]{Heatmap Profile Extractor, p.~\pageref*{profiles}}. Draw a segment on a heatmap. Save a 200-point table or a profile image.\\
+Find a maximum or minimum over an interval & \hyperref[extrema]{Extreme Finder Tool, p.~\pageref*{extrema}}. Specify a position or time, then restrict the search. Save section data and the figures with the marked extrema.\\
+Follow a moving edge through time & \hyperref[shock]{Shock Wave Detector, p.~\pageref*{shock}}. Anchor a trajectory on a heatmap, inspect the profile and its derivative, then export positions and speeds.\\
+Repeat a sequence of plots & \hyperref[recorder]{Code Recorder, p.~\pageref*{recorder}}. Record the supported plotting actions on a binary output file. Generate and run a Python script.\\
+Make matched figures for a case & \hyperref[standard]{Standard figures, p.~\pageref*{standard}}. Pass a formatted case folder to the Linux command. Collect the coordinate maps and layout figures in one directory.\\}
+\subhead{Pick the practice input}
+Use \code{quickstart.case} for annotation, line extraction and extrema. Its temperature peak reaches 8 eV at 50 µm and 2 ns. Use \code{quickstart.out} for recording and replay. For shock detection, open the separate \code{moving-edge/fort.10}. For standard figures, pass the enclosing \code{moving-edge} directory with its \code{data.in}.
+\checknote{How to check a trace}{On the moving-edge example, find the edge in the heatmap, verify its position on the same frame's derivative, then compare the position change between two frames with the speed in the CSV. Chapter~\ref{shock} takes you through all three checks.}

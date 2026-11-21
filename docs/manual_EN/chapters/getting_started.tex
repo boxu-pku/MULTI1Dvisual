@@ -20,7 +20,7 @@ sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
 \end{verbatim}
 \subhead{Check, update or remove}
 On Debian or Ubuntu, \code{dpkg-query -W multi1dvisual} prints the installed version. On Fedora, use \code{rpm -q multi1dvisual}. For a newer package, repeat the installation command with its new filename. To uninstall, use \code{sudo apt remove multi1dvisual} or \code{sudo dnf remove multi1dvisual}.
-\checknote{Offline documentation}{The Linux package places the manuals and example below \code{/usr/share/multi1dvisual/docs/}. Copy \code{examples/quickstart.zip} to a writable directory before practising.}
+\checknote{Offline documentation}{Find the manuals under \code{/usr/share/multi1dvisual/docs/}. Copy \code{examples/quickstart.zip} from there to a writable directory for the exercises.}
 
 \nextpage{otherinstall}{Windows and source installations}
 \subhead{Windows 10 or 11, x64}
@@ -58,7 +58,7 @@ Extract \code{quickstart.zip} into a writable folder. The bundle contains two re
 \#8 \enspace 4.0 ns & 8 eV at 70 µm, cell \#14\\}
 \subhead{What the example contains}
 There are nine outputs at 0.5~ns intervals. The 21 centres run from 0 to 100~µm at 5~µm intervals. \code{T} is a smooth peak above a 2~eV baseline. \code{R} is a simple density ramp. The global scalar \code{ENIE} increases from 10 to 18 in the example's stored units.
-\checknote{Second representation}{Open \code{quickstart.out} to read the equivalent binary data. Use this copy for the recording and replay exercise in Chapter~\ref{recorder}.}
+\checknote{Other practice inputs}{\code{quickstart.out} holds the same temperature data in binary form for Chapter~\ref{recorder}. A separate folder, \code{moving-edge/}, contains the density example for Chapters~\ref{shock} and~\ref{standard}.}
 
 \chapterpage{files}{Open files and navigate the workspace}
 \Table{Entry to open}{Companion data and how the viewer reads it}{

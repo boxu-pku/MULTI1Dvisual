@@ -1,0 +1,12 @@
+\chapterpage{tools}{按问题选择工具}
+“工具”菜单提供五个交互工具。独立的标准出图脚本从终端运行，适合给一组算例生成相同规格的图像。可根据想带走的结果，在下表直接跳到相应章节。
+\Table{想完成的任务}{从哪里开始，可以得到什么}{
+指出图中的一个特征 & \hyperref[annotations]{标注工具，第~\pageref*{annotations}~页}。在当前画布上加箭头、文字或形状，保存带标注的图像。\\
+沿任意线段读数 & \hyperref[profiles]{热图分布提取，第~\pageref*{profiles}~页}。在热图上拖出线段，得到 200 个采样值，可导出表格或曲线图。\\
+找指定范围里的极大值、极小值 & \hyperref[extrema]{极值寻找工具，第~\pageref*{extrema}~页}。给定位置或时刻，限定搜索区间，可保存截面数据和标有极值的图。\\
+跟踪一个移动的边缘 & \hyperref[shock]{冲击波检测，第~\pageref*{shock}~页}。在热图上设定参考帧，逐帧检查剖面和导数，再导出位置与速度。\\
+重复一串绘图操作 & \hyperref[recorder]{代码录制，第~\pageref*{recorder}~页}。在二进制输出上录下支持的绘图操作，生成可独立运行的 Python 脚本。\\
+给整个算例统一出图 & \hyperref[standard]{标准出图脚本，第~\pageref*{standard}~页}。在 Linux 终端指定格式化文件所在目录，把两种坐标的热图和布局图写入同一文件夹。\\}
+\subhead{选哪个练习文件}
+标注、线段取样和极值练习可打开 \code{quickstart.case}。它的温度峰在 2 ns 时经过 50 µm，峰值为 8 eV。录制与回放使用 \code{quickstart.out}。冲击波检测单独打开 \code{moving-edge/fort.10}。标准出图则传入外层的 \code{moving-edge} 目录，其中同时有 \code{data.in}。
+\checknote{怎样确认跟踪的是同一个边缘}{先在热图上找到移动边缘，再到同一时刻的导数图检查位置，最后用两帧间的位移复算 CSV 中的速度。第~\ref{shock}~章用同一份数据演示这三步。}

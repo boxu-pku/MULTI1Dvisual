@@ -1,0 +1,45 @@
+\chapterpage{shock}{Track a front with the shock detector}
+\subhead{Start with an edge whose position is known}
+Open \code{moving-edge/fort.10} from the extracted practice archive. Its 60 cell centres are spaced 1 µm apart. The density rises smoothly from about 1 to 1.5 g/cm³ across an edge which moves one cell per output. There are 13 records, from 0 to 12 ns. The known position at 6 ns is 24.5 µm.
+\begin{enumerate}
+\item On \ui{Heatmap}, choose mass density \code{R}, Eulerian cell centres \code{XC}, length \code{um}, time \code{ns} and linear colour. Click \ui{Auto} and \ui{Plot}. The detector takes its field, coordinate and units from this tab when detection starts.
+\item Open \ui{Tools → Shock Wave Detector} (\keys{Ctrl+D}). Set \ui{Reference Time} to step 6. Enter \code{20} and \code{29} for the search range, then click \ui{Add Ref}. Check that the table contains step 6 and the interval. The bounds use the selected position unit.
+\item Set \ui{Max Position Deviation} to 5 µm, leave the detection threshold at 0.2 and enable \ui{Show Trajectory}. Click \ui{Start Detection}. Select step 6 as the visualization time to inspect that record.
+\end{enumerate}
+\Figure{shock-map}{Ubuntu desktop, English interface. The marked trajectory follows the density transition. The reference table identifies the record that anchors this run.}{90mm}
+\checknote{First check}{The saved positions at 0, 6 and 12 ns should be 18.5, 24.5 and 30.5 µm. The bright plateau extends past all three positions. Its largest density value does not locate the edge.}
+
+\nextpage{shockinspect}{Check the front on a single record}
+\subhead{What the reference and the threshold select}
+Within the reference interval the detector rescales the field to its local range, then chooses the sampled position with the largest absolute spatial gradient. It needs at least three supported samples and a varying field. The detection threshold tests this normalized gradient. The search then proceeds into adjacent records within the maximum allowed position change. An empty reference table uses the selected reference step across its supported range. A second reference can steer the same trace through competing gradients.
+\subhead{Compare the profile and its derivative}
+Select step 6 under \ui{Visualization Time}. In the density-profile tab, locate the steepest part of the rise. On the derivative tab check its peak near 24.5 µm. Change the inspection time to step 0 and then step 12. The reference table stays at step 6 while the inspected record changes.
+\Figure{shock-derivative}{At 6 ns, the gradient peak locates the edge. The post-jump marker lies farther right, where the gradient has fallen back below the chosen threshold.}{83mm}
+\subhead{Choose the value associated with the trace}
+In the density-source control, the maximum mode takes the largest value anywhere in the record. \ui{Post-shock jump} starts at the strongest absolute gradient of the full profile and scans toward increasing position for the first sample below an absolute derivative threshold. At \code{0.01} (g/cm³)/µm, the exported density at 6 ns is 1.496654 g/cm³. Maximum mode gives 1.500000 g/cm³. Rerun detection after switching modes to refresh the inspection plots.
+\checknote{Direction and units}{The post-jump search always scans to the right. With another edge, a descending profile, or a different length unit, inspect the marker and derivative again. If the criterion is never met, the representative value can be missing.}
+
+\nextpage{shockspeed}{Read position, speed and derived pressure}
+\subhead{Check the slope before smoothing}
+The example moves from 18.5 to 30.5 µm in 12 ns. Dividing displacement by elapsed time gives 1 µm/ns, or 1 km/s. Open \ui{Velocity Curve} and compare the speed with the slope of the position trace. Use Eulerian positions for this check. A material label or a cell index would give a different meaning to the slope.
+\Figure{shock-velocity}{Velocity view on Ubuntu. The position trace rises linearly. The bottom panel uses limits of 0.8 to 1.2 km/s so the constant speed is easy to read.}{82mm}
+\Table{Control or output}{How it affects the result}{
+\ui{Velocity Curve} → \ui{Frac}, \ui{Apply} & With five or more points, the displayed smooth curve fits position by LOWESS, resamples at 0.1 ns and differentiates. Record the fraction you used.\\
+Velocity time range & Enter both endpoints in ns, in increasing order. Include at least two tracked records. Clear both ends for the full interval.\\
+CSV velocity & The export starts with a numerical derivative at the tracked times. With enough points, \ui{Enable Smoothing} uses a Savitzky--Golay derivative of position with the chosen window and polynomial order. Its values can differ from the on-screen LOWESS curve.\\}
+\subhead{Read the Hugoniot tab}
+Select density \code{R} for this view. The tab uses the tracked speed, the chosen representative density, the initial pressure $P_0$ in Pa and the initial density $\rho_0$ in g/cm³ to derive a pressure versus compression curve. The pressure column is calculated independently of any stored \code{PT} field. Check the inputs and density-mode label before comparing two exports. The practice edge supplies an arithmetic check of speed.
+
+\nextpage{shockexport}{Export and audit the trajectory}
+\ui{Save Heatmap} writes the overlay as an image. \ui{Save Trajectory} writes one CSV row per included tracked record. For the exercise clear the velocity time bounds, turn off the general smoothing checkbox, select maximum density and rerun. Save \code{edge-max.csv}. Switch to post-jump density, rerun and save \code{edge-jump.csv} under a new name.
+\Table{CSV field}{Check on the example}{
+\code{Time_Index}, \code{Time (ns)} & 13 data rows. Step 6 has time 6.0000 ns. The zero-based record index and time are separate columns.\\
+\code{Position (um)}, \code{Position (cm)} & At step 6 read 24.5000 µm and 0.002450 cm. Check agreement by multiplying the centimetre column by 10,000.\\
+\code{Velocity (km/s)} & 1.0000. Check independently by dividing the position change from step 5 to 7 by the 2 ns interval.\\
+\code{Max R (g/cm3)} or \code{Post-jump R (g/cm3)} & The column heading identifies the selected density rule. For step 6 compare 1.500000 with 1.496654. The tracked position is 24.5 µm in both files.\\
+Compression and pressure & Compression is the density ratio to $\rho_0$. Derived pressures have separate Pa and TPa columns. Missing values or compression at or below one can leave pressure missing.\\}
+\subhead{When the overlay needs a closer look}
+If the reference yields no point, place its interval over the visible transition with three or more cell centres. A gap or a sudden change of slope merits a check of the adjacent profiles. When a new candidate is missing, the tracker can carry the previous position forward within the supported region. A flat segment alone cannot establish that the front stopped. Version 2.3.1 returns at most one position per time, including when multiple references or the multiple-shocks option are used.
+\checknote{A display issue in 2.3.1}{With \code{um} selected, the short results summary can round the start and end positions to \code{0.0 um}. Read the overlay and both position columns of the CSV for the coordinates.}
+\subhead{Repeat the analysis}
+Use the dialog's save and load configuration buttons for reference rows, continuity, detection threshold and the general velocity settings. Reference rows store step indices. After loading, check their times against the active case. Also record the heatmap coordinates and units, density mode, post-jump threshold and LOWESS fraction beside the CSV. These last choices require separate verification when reopening a session.
