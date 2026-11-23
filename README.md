@@ -2,7 +2,23 @@
 
 <img src="resources/icons/multi1dvisual.png" alt="MULTI1Dvisual" width="64">
 
-[Linux 和 Windows 桌面安装](#安装指南) · [English](README_EN.md)
+[English](README_EN.md)
+
+MULTI1Dvisual 可以直接读取 MULTI1D 的 `fort.10`，绘制空间剖面、时间曲线和时空热图。
+
+## 下载安装包
+
+| 平台 / Platform | [MULTI1Dvisual 2.3.1 安装包 / Installers](https://github.com/boxu-pku/MULTI1Dvisual/releases/tag/v2.3.1) |
+| --- | --- |
+| Debian / Ubuntu | [下载 Debian 软件包 / Download DEB](https://github.com/boxu-pku/MULTI1Dvisual/releases/download/v2.3.1/multi1dvisual_2.3.1-1_all.deb) |
+| Fedora | [下载 Fedora 软件包 / Download RPM](https://github.com/boxu-pku/MULTI1Dvisual/releases/download/v2.3.1/multi1dvisual-2.3.1-1.noarch.rpm) |
+| Windows 10 / 11 x64 | [下载 Windows 安装程序 / Download Windows installer (.exe)](https://github.com/boxu-pku/MULTI1Dvisual/releases/download/v2.3.1/MULTI1Dvisual-Setup-2.3.1-x64.exe) |
+
+请先登录有此仓库访问权限的 GitHub 账号。Linux 用户用系统软件安装器打开下载的软件包，安装后从应用菜单启动 **MULTI1Dvisual**。Windows 用户双击 `.exe`，按向导安装后从“开始”菜单启动。
+
+[Linux 命令行安装](#安装指南) · [从源码运行（含 macOS）](#从源码运行)
+
+## 用户手册与示例
 
 [中文用户手册（PDF）](docs/manual_CN/multi1dvisual_manual_zh.pdf) · [English user manual (PDF)](docs/manual_EN/multi1dvisual_manual_en.pdf) · [手册配套示例](docs/examples/quickstart.zip)
 
@@ -188,13 +204,7 @@ MULTI1D可视化工具是一个专门用于可视化MULTI1D仿真程序输出结
 
 ## 安装指南
 
-| 系统 | 安装文件 | 安装方法 |
-| --- | --- | --- |
-| Ubuntu / Debian 桌面 | `multi1dvisual_2.3.1-1_all.deb` | 双击，用系统软件安装器打开，点击「安装」。 |
-| Fedora 桌面 | `multi1dvisual-2.3.1-1.noarch.rpm` | 双击，用「软件」或 Discover 打开，点击「安装」。 |
-| Windows 10/11 x64 | `MULTI1Dvisual-Setup-2.3.1-x64.exe` | 双击安装向导，可选择简体中文和桌面快捷方式。安装包包含 Python 与运行库。 |
-
-Linux 安装器会从发行版软件源补齐缺少的依赖，首次安装可能需要联网。安装完成后，在应用菜单搜索 **MULTI1Dvisual** 即可打开。也可以在安装文件所在目录选择对应的命令。
+从[下载表](#下载安装包)选择对应的软件包。Windows 安装向导自带 Python 和运行库，可选择简体中文和桌面快捷方式。Linux 安装器会从发行版软件源补齐依赖，首次安装可能需要联网。也可以在下载目录中执行对应的命令。
 
 ```sh
 # Ubuntu / Debian
@@ -206,7 +216,17 @@ sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
 
 安装新版软件包即可升级。卸载可使用系统软件管理器，或执行 `sudo apt remove multi1dvisual`、`sudo dnf remove multi1dvisual`。用户设置和日志位于 `~/.MULTI1D可视化工具/`。
 
-从源码启动时，在项目根目录的 Python 虚拟环境中运行 `python -m pip install -r requirements.txt`，然后运行 `python main.py`。要自行生成安装文件，请参阅[打包说明](packaging/README.md)。
+### 从源码运行
+
+在 macOS 或 Linux 图形桌面上，下载并解压 [v2.3.1 源码 ZIP](https://github.com/boxu-pku/MULTI1Dvisual/archive/refs/tags/v2.3.1.zip)，在包含 `main.py` 的目录中运行以下命令。
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python main.py
+```
+
+Windows 用户也可在已激活的 Python 虚拟环境中运行 `python -m pip install -r requirements.txt` 和 `python main.py`。自行生成安装包请参阅[打包说明](packaging/README.md)。
 
 ---
 
@@ -598,7 +618,6 @@ sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
 ```
 MULTI1Dvisual/
 ├── main.py                    # 程序入口
-├── run.bat                    # Windows启动脚本
 ├── packaging/                 # Linux 原生软件包和 Windows 安装向导
 ├── requirements.txt           # Python依赖列表
 ├── README.md                  # 项目说明文档（中文）

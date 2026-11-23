@@ -1,5 +1,7 @@
 # Build desktop installers
 
+For ready-to-install Debian, Fedora and Windows packages, see the [MULTI1Dvisual 2.3.1 release](https://github.com/boxu-pku/MULTI1Dvisual/releases/tag/v2.3.1).
+
 Run these commands from the repository root. Both builders read the application version from `utils/config.py` and write the installers to `dist/`.
 
 ## Linux packages

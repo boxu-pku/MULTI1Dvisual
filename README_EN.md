@@ -2,7 +2,23 @@
 
 <img src="resources/icons/multi1dvisual.png" alt="MULTI1Dvisual" width="64">
 
-[Linux and Windows installers](#installation-guide) · [中文](README.md)
+[中文](README.md)
+
+MULTI1Dvisual reads MULTI1D `fort.10` files and plots spatial profiles, time series and space–time heatmaps.
+
+## Desktop downloads
+
+| Platform | [MULTI1Dvisual 2.3.1 installers](https://github.com/boxu-pku/MULTI1Dvisual/releases/tag/v2.3.1) |
+| --- | --- |
+| Debian / Ubuntu | [Download Debian package (.deb)](https://github.com/boxu-pku/MULTI1Dvisual/releases/download/v2.3.1/multi1dvisual_2.3.1-1_all.deb) |
+| Fedora | [Download Fedora package (.rpm)](https://github.com/boxu-pku/MULTI1Dvisual/releases/download/v2.3.1/multi1dvisual-2.3.1-1.noarch.rpm) |
+| Windows 10 / 11 x64 | [Download Windows installer (.exe)](https://github.com/boxu-pku/MULTI1Dvisual/releases/download/v2.3.1/MULTI1Dvisual-Setup-2.3.1-x64.exe) |
+
+Sign in to GitHub with an account that has access to this repository. On Linux, open the downloaded package in your software installer, then launch **MULTI1Dvisual** from the applications menu. On Windows, double-click the `.exe`, complete the wizard and launch **MULTI1Dvisual** from Start.
+
+[Linux command-line installation](#installation-guide) · [Run from source, including on macOS](#run-from-source)
+
+## Manuals and sample files
 
 [English user manual (PDF)](docs/manual_EN/multi1dvisual_manual_en.pdf) · [中文用户手册（PDF）](docs/manual_CN/multi1dvisual_manual_zh.pdf) · [Sample files for the manuals](docs/examples/quickstart.zip)
 
@@ -188,13 +204,7 @@ Plot spatiotemporal distribution heatmaps.
 
 ## Installation Guide
 
-| Desktop | Installer | How to install |
-| --- | --- | --- |
-| Ubuntu / Debian | `multi1dvisual_2.3.1-1_all.deb` | Double-click the file, open it with your system package installer and select **Install**. |
-| Fedora | `multi1dvisual-2.3.1-1.noarch.rpm` | Double-click the file, open it in Software or Discover and select **Install**. |
-| Windows 10/11 x64 | `MULTI1Dvisual-Setup-2.3.1-x64.exe` | Open the installer, choose the language and select a desktop shortcut if desired. Python and the runtime libraries are included. |
-
-On Linux, the package manager installs missing dependencies from your distribution repositories. The first installation may need Internet access. Open **MULTI1Dvisual** from the applications menu. To install from a terminal, run the matching command in the download directory.
+Choose the package for your system in the [download table](#desktop-downloads). The Windows installer includes Python and the runtime libraries, a language selector and an optional desktop shortcut. On Linux, the package manager installs dependencies from your distribution repositories, so the first installation may need internet access. To install from a terminal, run the matching command in the download directory.
 
 ```sh
 # Ubuntu / Debian
@@ -206,7 +216,17 @@ sudo dnf install ./multi1dvisual-2.3.1-1.noarch.rpm
 
 Open a newer package to upgrade. To uninstall, use the system software manager, `sudo apt remove multi1dvisual` or `sudo dnf remove multi1dvisual`. Settings and logs live in `~/.MULTI1D可视化工具/`.
 
-For a source checkout, run `python -m pip install -r requirements.txt` in a virtual environment at the project root, then run `python main.py`. To build the installers, see the [packaging instructions](packaging/README.md).
+### Run from source
+
+On a macOS or Linux desktop, download and extract the [v2.3.1 source ZIP](https://github.com/boxu-pku/MULTI1Dvisual/archive/refs/tags/v2.3.1.zip). Run these commands in the directory containing `main.py`.
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python main.py
+```
+
+On Windows, activate a Python virtual environment and run `python -m pip install -r requirements.txt` followed by `python main.py`. To build the installers, see the [packaging instructions](packaging/README.md).
 
 ---
 
@@ -598,7 +618,6 @@ For a source checkout, run `python -m pip install -r requirements.txt` in a virt
 ```
 MULTI1Dvisual/
 ├── main.py                    # Program entry point
-├── run.bat                    # Windows startup script
 ├── packaging/                 # Native Linux packages and Windows setup wizard
 ├── requirements.txt           # Python dependencies list
 ├── README.md                  # Project documentation (Chinese)
